@@ -1,4 +1,4 @@
-import { connectToDatabase } from '../utils/mongodb';
+import { connectToDatabase } from '../util/mongodb';
 
 export default function Top({ movies }) {
     return (

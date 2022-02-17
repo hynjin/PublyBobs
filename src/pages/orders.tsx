@@ -1,8 +1,22 @@
-import { connectToDatabase } from '../util/mongodb';
+import { connectToDatabase } from './util/mongodb';
+import Link from 'next/link';
 
-export default function Orders({ orders }) {
+type OrderType = {
+    _id: string;
+    dayilyMenu_id: string;
+    order_id: string;
+    choose_id: string;
+};
+
+export default function Orders(props: { orders: OrderType[] }) {
+    const { orders } = props;
     return (
         <div>
+            <Link href="/">
+                <a>
+                    <p>뒤로가기</p>
+                </a>
+            </Link>
             <div className="text-3xl font-bold underline">오늘의 메뉴!</div>
             <h1>주문 기록</h1>
             데이터는 불러왔는데 id만 있고 데이터 연결 아직....

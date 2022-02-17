@@ -1,8 +1,22 @@
-import { connectToDatabase } from '../util/mongodb';
+import { connectToDatabase } from './util/mongodb';
+import Link from 'next/link';
 
-export default function Restaurants({ restaurants }) {
+type RestaurantType = {
+    _id: string;
+    name: string;
+    url: string;
+    description: string;
+};
+
+export default function Restaurants(props: { restaurants: RestaurantType[] }) {
+    const { restaurants } = props;
     return (
         <div>
+            <Link href="/">
+                <a>
+                    <p>뒤로가기</p>
+                </a>
+            </Link>
             <div className="text-3xl font-bold underline">식당!</div>
             <h1>주문</h1>
             <ul>

@@ -1,14 +1,14 @@
-import Image from 'next/image';
-import styles from '../styles/Home.module.css';
+import type { NextPage } from 'next';
+import styles from './styles/Home.module.css';
 import Link from 'next/link';
 
-export default function Home() {
+const Home: NextPage = () => {
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>Grand Opening Publy Bobs!</h1>
+            <h1 className={styles.title}>Coming soon Publy Bobs!</h1>
             <p className={styles.description}>
                 Get started by editing{' '}
-                <code className={styles.code}>pages/index.js</code>
+                <code className={styles.code}>src/pages/index.js</code>
             </p>
             <div className={styles.grid}>
                 <Link href="/restaurants">
@@ -38,4 +38,6 @@ export default function Home() {
             </div>
         </div>
     );
-}
+};
+
+export default Home;

@@ -17,19 +17,19 @@ export default function Home() {
                         <p>MongoDB애 저장되어 있는 식당 목록</p>
                     </a>
                 </Link>
-                <Link href="/restaurants">
+                <Link href="/menus">
                     <a className={styles.card}>
                         <h2>메뉴 &rarr;</h2>
                         <p>MongoDB애 저장되어 있는 메뉴 목록</p>
                     </a>
                 </Link>
-                <Link href="/restaurants">
+                <Link href="/orders">
                     <a className={styles.card}>
                         <h2>주문 &rarr;</h2>
                         <p>MongoDB애 저장되어 있는 주문 목록</p>
                     </a>
                 </Link>
-                <Link href="/restaurants">
+                <Link href="/dayilyMenus">
                     <a className={styles.card}>
                         <h2>오늘의 메뉴 &rarr;</h2>
                         <p>MongoDB애 저장되어 있는 오늘의 메뉴 목록</p>

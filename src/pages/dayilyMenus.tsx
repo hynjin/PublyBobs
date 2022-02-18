@@ -1,13 +1,6 @@
 import { connectToDatabase } from './util/mongodb';
 import Link from 'next/link';
 
-type DayilyMenuType = {
-    _id: string;
-    restaurant_id: string;
-    menus: string[];
-    chef_id: string;
-};
-
 export default function DayilyMenus(props: { dayilyMenus: DayilyMenuType[] }) {
     const { dayilyMenus } = props;
     return (
@@ -41,6 +34,8 @@ export async function getServerSideProps() {
         .find({})
         // .limit(20)
         .toArray();
+
+    // const
 
     return {
         props: {

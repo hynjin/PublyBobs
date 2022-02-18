@@ -1,13 +1,6 @@
 import { connectToDatabase } from './util/mongodb';
 import Link from 'next/link';
 
-type OrderType = {
-    _id: string;
-    dayilyMenu_id: string;
-    order_id: string;
-    choose_id: string;
-};
-
 export default function Orders(props: { orders: OrderType[] }) {
     const { orders } = props;
     return (

@@ -1,13 +1,6 @@
 import { connectToDatabase } from './util/mongodb';
 import Link from 'next/link';
 
-type RestaurantType = {
-    _id: string;
-    name: string;
-    url: string;
-    description: string;
-};
-
 export default function Restaurants(props: { restaurants: RestaurantType[] }) {
     const { restaurants } = props;
     return (

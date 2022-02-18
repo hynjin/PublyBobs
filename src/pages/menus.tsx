@@ -1,12 +1,6 @@
 import { connectToDatabase } from './util/mongodb';
 import Link from 'next/link';
 
-type MenuType = {
-    _id: string;
-    name: string;
-    description: string;
-};
-
 export default function Menus(props: { menus: MenuType[] }) {
     const { menus } = props;
     return (

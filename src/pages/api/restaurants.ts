@@ -48,7 +48,7 @@ export default async function restaurantHandler(
             await deleteRestaurant(restaurant_id, db);
             break;
         default:
-            res.setHeader('Allow', ['GET', 'POST']);
+            res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
 }

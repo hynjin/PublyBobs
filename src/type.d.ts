@@ -9,6 +9,7 @@ declare type MenuType = {
     _id: string;
     name: string;
     description: string;
+    restaurant_id: string;
 };
 
 declare type DayilyMenuType = {

@@ -1,6 +1,7 @@
 import { connectToDatabase } from './util/mongodb';
 import Link from 'next/link';
 import AddRestaurantForm from '../components/AddRestaurantForm';
+import { XIcon } from '@heroicons/react/outline';
 
 export default function Restaurants(props: { restaurants: RestaurantType[] }) {
     const { restaurants } = props;
@@ -38,9 +39,9 @@ export default function Restaurants(props: { restaurants: RestaurantType[] }) {
                         {restaurants.map((restaurant) => (
                             <div
                                 key={restaurant.name}
-                                className="relative border-2"
+                                className="relative border-2 rounded-lg"
                             >
-                                <div className="absolute top-0 right-1 -ml-8 pr-2 flex sm:-ml-1">
+                                <div className="absolute top-0 right-0 -ml-8 pr-2 flex sm:-ml-1">
                                     <button
                                         type="button"
                                         className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
@@ -50,7 +51,10 @@ export default function Restaurants(props: { restaurants: RestaurantType[] }) {
                                             )
                                         }
                                     >
-                                        X
+                                        <XIcon
+                                            className="h-6 w-6"
+                                            aria-hidden="true"
+                                        />
                                     </button>
                                 </div>
                                 <dt>

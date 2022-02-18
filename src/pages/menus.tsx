@@ -100,8 +100,9 @@ export default function Menus(props: {
                                             // }
                                         />
                                         <button
-                                            className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                                            type="submit"
+                                            className="disabled:bg-purple-400 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                                            type="button"
+                                            disabled={true}
                                         >
                                             메뉴 저장
                                         </button>

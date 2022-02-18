@@ -1,5 +1,6 @@
 import { connectToDatabase } from '../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { ObjectId } from 'mongodb';
 
 const getAllRestaurants = async (db: any) => {
     return db.collection('restaurants').find({}).limit(200).toArray();
@@ -19,7 +20,7 @@ const deleteRestaurant = async (restaurant_id: any, db: any) => {
         console.log('+++ delete restaurants post', restaurant_id);
         return await db
             .collection('restaurants')
-            .findOneAndDelete({ _id: restaurant_id });
+            .findOneAndDelete({ _id: new ObjectId(restaurant_id) });
     } catch (e) {
         console.log('error at add rataurants');
     }

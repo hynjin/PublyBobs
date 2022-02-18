@@ -1,26 +1,78 @@
 import { connectToDatabase } from './util/mongodb';
 import Link from 'next/link';
+import AddRestaurantForm from '../components/AddRestaurantForm';
 
 export default function Restaurants(props: { restaurants: RestaurantType[] }) {
     const { restaurants } = props;
+
+    const onClickDeleteRestaurant = async (restaurant_id: string) => {
+        const res = await fetch('/api/restaurants', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ restaurant_id }),
+        });
+    };
+
     return (
-        <div>
-            <Link href="/">
-                <a>
-                    <p>뒤로가기</p>
-                </a>
-            </Link>
-            <div className="text-3xl font-bold underline">식당!</div>
-            <h1>주문</h1>
-            <ul>
-                {restaurants.map((restaurant) => (
-                    <li key={restaurant._id}>
-                        <h2>{restaurant.name}</h2>
-                        <h3>{restaurant.url}</h3>
-                        <p>{restaurant.description}</p>
-                    </li>
-                ))}
-            </ul>
+        <div className="py-12 bg-white">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="lg:text-center">
+                    <h2 className="text-base text-indigo-600 font-semibold tracking-wide uppercase">
+                        <Link href="/">
+                            <a>
+                                <p>뒤로가기</p>
+                            </a>
+                        </Link>
+                    </h2>
+                    <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                        식당!
+                    </p>
+                    <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                        식당을 추가해볼까용
+                    </p>
+                    <AddRestaurantForm />
+                </div>
+
+                <div className="mt-10">
+                    <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
+                        {restaurants.map((restaurant) => (
+                            <div
+                                key={restaurant.name}
+                                className="relative border-2"
+                            >
+                                <div className="absolute top-0 right-1 -ml-8 pr-2 flex sm:-ml-1">
+                                    <button
+                                        type="button"
+                                        className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                                        onClick={() =>
+                                            onClickDeleteRestaurant(
+                                                restaurant._id
+                                            )
+                                        }
+                                    >
+                                        X
+                                    </button>
+                                </div>
+                                <dt>
+                                    <p className="ml-16 text-lg leading-6 font-medium text-gray-900">
+                                        {restaurant.name}
+                                    </p>
+                                </dt>
+                                <dd className="mt-2 ml-16 text-base text-gray-500">
+                                    {restaurant.description === ''
+                                        ? '설명이 없당'
+                                        : restaurant.description}
+                                </dd>
+                                <dd className="mt-2 ml-16 text-base text-gray-500">
+                                    {restaurant.url === ''
+                                        ? 'url이 없당'
+                                        : restaurant.url}
+                                </dd>
+                            </div>
+                        ))}
+                    </dl>
+                </div>
+            </div>
         </div>
     );
 }

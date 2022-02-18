@@ -3,6 +3,7 @@ import { connectToDatabase } from './util/mongodb';
 import Link from 'next/link';
 import SelectRestaurant from '../components/SelectRestaurant';
 import _ from 'lodash';
+import { PlusIcon } from '@heroicons/react/solid';
 
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
@@ -11,6 +12,8 @@ export default function Menus(props: {
     restaurants: RestaurantType[];
 }) {
     const { menus, restaurants } = props;
+    const restaurantsById = _.mapKeys(restaurants, '_id');
+
     const [selectedRestaurant, setSelectedRestaurant] = useState<{
         _id: string;
         name: string;
@@ -41,10 +44,6 @@ export default function Menus(props: {
         });
     };
 
-    const getRestarurantName = (restaurant_id: string) => {
-        return _.find(restaurants, { _id: restaurant_id })?.name ?? '';
-    };
-
     return (
         <div className="py-12 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -67,6 +66,72 @@ export default function Menus(props: {
                         selectedRestaurant={selectedRestaurant}
                         setSelectedRestaurant={onSelectRestaurant}
                     />
+                    <div className="md:flex md:items-center mb-6">
+                        <div className="w-full">
+                            <button
+                                type="button"
+                                disabled
+                                className="disabled:text-gray-300 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                                onClick={
+                                    () => {}
+                                    // onClickDeleteRestaurant(
+                                    //     restaurant._id
+                                    // )
+                                }
+                            >
+                                <PlusIcon
+                                    className="h-6 w-6"
+                                    aria-hidden="true"
+                                />
+                            </button>
+                            <input
+                                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                id="add-retaurant-name"
+                                type="text"
+                                placeholder="여기에 식당 이름을"
+                                // value={}
+                                // onChange={(e) =>
+                                //     setRestaurant({
+                                //         ...restaurant,
+                                //         name: e.target.value,
+                                //     })
+                                // }
+                            />
+                            <input
+                                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                id="add-retaurant-name"
+                                type="text"
+                                placeholder="여기에 메뉴 이름을"
+                                // value={}
+                                // onChange={(e) =>
+                                //     setRestaurant({
+                                //         ...restaurant,
+                                //         name: e.target.value,
+                                //     })
+                                // }
+                            />
+                            <input
+                                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                id="add-retaurant-name"
+                                type="text"
+                                placeholder="여기에 메뉴 설명을"
+                                // value={}
+                                // onChange={(e) =>
+                                //     setRestaurant({
+                                //         ...restaurant,
+                                //         name: e.target.value,
+                                //     })
+                                // }
+                            />
+                            <button
+                                className="disabled:bg-purple-400 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                                type="button"
+                                disabled={true}
+                            >
+                                메뉴 저장
+                            </button>
+                        </div>
+                    </div>
                     {menusByRestaurantId &&
                         menusByRestaurantId?.length > 0 &&
                         menusByRestaurantId.map((menu) => {
@@ -78,6 +143,23 @@ export default function Menus(props: {
                                             id="add-retaurant-name"
                                             type="text"
                                             placeholder="여기에 식당 이름을"
+                                            value={
+                                                restaurantsById[
+                                                    menu.restaurant_id
+                                                ]?.name
+                                            }
+                                            // onChange={(e) =>
+                                            //     setRestaurant({
+                                            //         ...restaurant,
+                                            //         name: e.target.value,
+                                            //     })
+                                            // }
+                                        />
+                                        <input
+                                            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                            id="add-retaurant-name"
+                                            type="text"
+                                            placeholder="여기에 메뉴 이름을"
                                             value={menu.name}
                                             // onChange={(e) =>
                                             //     setRestaurant({
@@ -90,7 +172,7 @@ export default function Menus(props: {
                                             className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                             id="add-retaurant-name"
                                             type="text"
-                                            placeholder="여기에 식당 설명을"
+                                            placeholder="여기에 메뉴 설명을"
                                             value={menu.description}
                                             // onChange={(e) =>
                                             //     setRestaurant({
@@ -143,7 +225,8 @@ export default function Menus(props: {
                                 </dt>
                                 <dd className="mt-2 ml-16 text-base text-gray-500">
                                     {/* {restaurants[menu.restaurant_id].name} */}
-                                    {getRestarurantName(menu.restaurant_id)}
+                                    {restaurantsById[menu.restaurant_id].name ??
+                                        ''}
                                 </dd>
                                 <dd className="mt-2 ml-16 text-base text-gray-500">
                                     {menu.description === ''

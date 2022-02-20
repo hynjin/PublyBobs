@@ -1,4 +1,4 @@
-import { connectToDatabase } from './util/mongodb';
+import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 
 export default function Orders(props: { orders: OrderType[] }) {

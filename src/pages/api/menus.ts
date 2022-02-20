@@ -1,5 +1,6 @@
-import { connectToDatabase } from '../util/mongodb';
+import { connectToDatabase } from '../../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import _ from 'lodash';
 
 const getAllMenus = async (db: any) => {
     return db.collection('menus').find({}).limit(200).toArray();
@@ -12,7 +13,9 @@ const getAllMenusByRestaurantsId = async (restaurant_id: any, db: any) => {
 const addMenu = async (menu: any, db: any) => {
     try {
         console.log('+++ add menus post', menu);
-        return await db.collection('menus').insertOne(menu);
+        return db
+            .collection('menus')
+            .insertOne({ ...menu, updated_at: new Date() });
     } catch (e) {
         console.log('error at add menus');
     }
@@ -41,8 +44,8 @@ export default async function menusHandler(
             break;
         case 'POST':
             console.log('+++ call menus post');
-            await addMenu(body, db);
-            res.status(200);
+            const result = await addMenu(body, db);
+            res.status(200).json(result.insertedId);
             break;
         case 'DELETE':
             const { menu_id } = body;

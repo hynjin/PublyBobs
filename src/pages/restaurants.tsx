@@ -1,4 +1,4 @@
-import { connectToDatabase } from './util/mongodb';
+import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 import AddRestaurantForm from '../components/AddRestaurantForm';
 import { XIcon } from '@heroicons/react/outline';

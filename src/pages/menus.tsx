@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { connectToDatabase } from './util/mongodb';
+import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 import SelectRestaurant from '../components/SelectRestaurant';
 import _ from 'lodash';

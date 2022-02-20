@@ -1,4 +1,4 @@
-import { connectToDatabase } from '../../util/mongodb';
+import { connectToDatabase } from '../../../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
 

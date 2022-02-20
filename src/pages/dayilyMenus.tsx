@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
-import { connectToDatabase } from './util/mongodb';
+import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 import { XIcon } from '@heroicons/react/outline';
 import SelectRestaurant from '../components/SelectRestaurant';
+import AddRestaurantForm from '../components/AddRestaurantForm';
 import _ from 'lodash';
 import { PlusIcon } from '@heroicons/react/solid';
 
@@ -35,9 +36,16 @@ export default function DayilyMenus(props: DatypeMenuProps) {
     const [menusByRestaurantId, setMenusByRestaurantId] =
         useState<MenuType[]>();
 
-    const [addDaliyMenus, setAddDaliyMenus] = useState<MenuType[]>();
-    const [newDaliyMenus, setNewDaliyMenus] =
-        useState<({ name: string; description: string } | MenuType)[]>();
+    const [addDayilyMenus, setAddDayilyMenus] = useState<MenuType[]>();
+    const [addNewDaliyMenus, setAddNewDaliyMenus] = useState<MenuType[]>();
+    const [newDaliyMenus, setNewDaliyMenus] = useState<
+        ({ name: string; description: string } | MenuType)[]
+    >([
+        {
+            name: '',
+            description: '',
+        },
+    ]);
 
     const onSelectRestaurant = async (select: RestaurantType) => {
         setSelectedRestaurant(select);
@@ -49,6 +57,34 @@ export default function DayilyMenus(props: DatypeMenuProps) {
         const resultMenus = await result.json();
         setMenusByRestaurantId(resultMenus);
     };
+
+    const onClickAddDayilyMenus = async () => {
+        const newAddDayilyMenus = {
+            menus: _.mapKeys(addDayilyMenus, '_id'),
+            restaurant_id: selectedRestaurant._id,
+        };
+        const res = await fetch('/api/dayilyMenus', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newAddDayilyMenus),
+        });
+    };
+
+    const onClickAddNewMenus = async (newMenu: {
+        name: string;
+        description: string;
+    }) => {
+        const res = await fetch('/api/menus', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                ...newMenu,
+                restaurant_id: selectedRestaurant._id,
+            }),
+        });
+        return res;
+    };
+
     return (
         <div className="py-12 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -84,21 +120,7 @@ export default function DayilyMenus(props: DatypeMenuProps) {
                         <p className="mt-4 max-w-xl text-2xl text-gray-900 lg:mx-auto lg:text-center">
                             {selectedRestaurant.name}
 
-                            {!selectedRestaurant._id && (
-                                <input
-                                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                                    id="add-retaurant-name"
-                                    type="text"
-                                    placeholder="여기에 식당 이름을"
-                                    // value={}
-                                    // onChange={(e) =>
-                                    //     setRestaurant({
-                                    //         ...restaurant,
-                                    //         name: e.target.value,
-                                    //     })
-                                    // }
-                                />
-                            )}
+                            {!selectedRestaurant._id && <AddRestaurantForm />}
                         </p>
                         {menusByRestaurantId &&
                             menusByRestaurantId?.length > 0 &&
@@ -138,8 +160,8 @@ export default function DayilyMenus(props: DatypeMenuProps) {
                                                 className="disabled:bg-purple-400 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                                                 type="button"
                                                 onClick={() => {
-                                                    setAddDaliyMenus([
-                                                        ...(addDaliyMenus ??
+                                                    setAddDayilyMenus([
+                                                        ...(addDayilyMenus ??
                                                             []),
                                                         menu,
                                                     ]);
@@ -151,76 +173,92 @@ export default function DayilyMenus(props: DatypeMenuProps) {
                                     </div>
                                 );
                             })}
-                        <div className="md:flex md:items-center mb-6">
-                            <div className="w-full">
-                                <button
-                                    type="button"
-                                    className="disabled:text-gray-300 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                                    onClick={
-                                        () => {}
-                                        // onClickDeleteRestaurant(
-                                        //     restaurant._id
-                                        // )
-                                    }
-                                >
-                                    <PlusIcon
-                                        className="h-6 w-6"
-                                        aria-hidden="true"
-                                    />
-                                </button>
-                                <input
-                                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                                    id="add-retaurant-name"
-                                    type="text"
-                                    placeholder="여기에 메뉴 이름을"
-                                    // value={}
-                                    // onChange={(e) =>
-                                    //     setRestaurant({
-                                    //         ...restaurant,
-                                    //         name: e.target.value,
-                                    //     })
-                                    // }
-                                />
-                                <input
-                                    className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
-                                    id="add-retaurant-name"
-                                    type="text"
-                                    placeholder="여기에 메뉴 설명을"
-                                    // value={}
-                                    // onChange={(e) =>
-                                    //     setRestaurant({
-                                    //         ...restaurant,
-                                    //         name: e.target.value,
-                                    //     })
-                                    // }
-                                />
-                                <button
-                                    className="disabled:bg-purple-400 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
-                                    type="button"
-                                    onClick={() => {
-                                        setAddDaliyMenus([
-                                            ...(addDaliyMenus ?? []),
-                                            {
-                                                _id: '',
-                                                name: '',
-                                                description: '',
-                                                restaurant_id: '',
-                                            },
-                                        ]);
+                        {_.map(newDaliyMenus, (newMenu, index) => {
+                            return (
+                                <div className="md:flex md:items-center mb-6">
+                                    <div className="w-full">
+                                        <button
+                                            hidden={
+                                                newDaliyMenus.length !==
+                                                index + 1
+                                            }
+                                            type="button"
+                                            className="disabled:text-gray-300 rounded-md hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
+                                            onClick={() => {
+                                                setNewDaliyMenus([
+                                                    ...(newDaliyMenus ?? []),
+                                                    {
+                                                        name: '',
+                                                        description: '',
+                                                    },
+                                                ]);
+                                            }}
+                                        >
+                                            <PlusIcon
+                                                className="h-6 w-6"
+                                                aria-hidden="true"
+                                            />
+                                        </button>
+                                        <input
+                                            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                            id="add-retaurant-name"
+                                            type="text"
+                                            placeholder="여기에 메뉴 이름을"
+                                            value={newMenu.name}
+                                            onChange={(e) => {
+                                                const newMenus = [
+                                                    ...newDaliyMenus,
+                                                ];
+                                                newMenus[index].name =
+                                                    e.target.value;
+                                                setNewDaliyMenus(newMenus);
+                                            }}
+                                        />
+                                        <input
+                                            className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                            id="add-retaurant-name"
+                                            type="text"
+                                            placeholder="여기에 메뉴 설명을"
+                                            value={newMenu.description}
+                                            onChange={(e) => {
+                                                const newMenus = [
+                                                    ...newDaliyMenus,
+                                                ];
+                                                newMenus[index].description =
+                                                    e.target.value;
+                                                setNewDaliyMenus(newMenus);
+                                            }}
+                                        />
+                                        <button
+                                            className="disabled:bg-purple-400 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                                            type="button"
+                                            onClick={async () => {
+                                                const result =
+                                                    await onClickAddNewMenus(
+                                                        newMenu
+                                                    );
+                                                const addNew =
+                                                    await result.json();
 
-                                        setNewDaliyMenus([
-                                            ...(newDaliyMenus ?? []),
-                                            {
-                                                name: '',
-                                                description: '',
-                                            },
-                                        ]);
-                                    }}
-                                >
-                                    메뉴 추가
-                                </button>
-                            </div>
-                        </div>
+                                                setAddDayilyMenus([
+                                                    ...(addDayilyMenus ?? []),
+                                                    {
+                                                        _id: addNew,
+                                                        name: newMenu.name,
+                                                        description:
+                                                            newMenu.description,
+                                                        restaurant_id:
+                                                            selectedRestaurant._id,
+                                                    },
+                                                ]);
+                                            }}
+                                        >
+                                            메뉴 추가
+                                        </button>
+                                    </div>
+                                </div>
+                            );
+                        })}
                         <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
                             {/* <input
                             className="bg-gray-200 appearance-none border-2 border-gray-200 rounded  py-2 px-4 mx-2 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
@@ -237,9 +275,9 @@ export default function DayilyMenus(props: DatypeMenuProps) {
                             //     })
                             // }
                         /> */}
-                            {_.map(addDaliyMenus, (menu, index) => (
+                            {_.map(addDayilyMenus, (menu, index) => (
                                 <div
-                                    key={menu._id}
+                                    key={index}
                                     className="relative border-2 rounded-lg"
                                 >
                                     <div className="absolute top-0 right-0 -ml-8 pr-2 flex sm:-ml-1">
@@ -248,9 +286,9 @@ export default function DayilyMenus(props: DatypeMenuProps) {
                                             className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
                                             onClick={() => {
                                                 console.log('+++ menu', menu);
-                                                setAddDaliyMenus(
+                                                setAddDayilyMenus(
                                                     _.filter(
-                                                        addDaliyMenus,
+                                                        addDayilyMenus,
                                                         (v, i) => i !== index
                                                     )
                                                 );
@@ -277,6 +315,9 @@ export default function DayilyMenus(props: DatypeMenuProps) {
                         <button
                             className="disabled:bg-purple-400 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                             type="button"
+                            onClick={() => {
+                                onClickAddDayilyMenus();
+                            }}
                         >
                             오늘의 메뉴 저장
                         </button>

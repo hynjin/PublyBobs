@@ -1,4 +1,4 @@
-import { connectToDatabase } from '../util/mongodb';
+import { connectToDatabase } from '../../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
 
@@ -40,8 +40,9 @@ export default async function restaurantHandler(
             break;
         case 'POST':
             console.log('+++ call restaurants post');
-            await addRestaurant(body, db);
-            res.status(200);
+            const result = await addRestaurant(body, db);
+            console.log('+++ result add restaurants post', result);
+            res.status(200).json(result);
             break;
         case 'DELETE':
             const { restaurant_id } = body;

@@ -31,7 +31,7 @@ export default async function restaurantHandler(
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
-    const { db } = await connectToDatabase();
+    const { db, client } = await connectToDatabase();
 
     switch (method) {
         case 'GET':
@@ -52,4 +52,5 @@ export default async function restaurantHandler(
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
+    client.close();
 }

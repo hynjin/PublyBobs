@@ -224,7 +224,6 @@ export default function Menus(props: {
                                     </p>
                                 </dt>
                                 <dd className="mt-2 ml-16 text-base text-gray-500">
-                                    {/* {restaurants[menu.restaurant_id].name} */}
                                     {restaurantsById[menu.restaurant_id].name ??
                                         ''}
                                 </dd>

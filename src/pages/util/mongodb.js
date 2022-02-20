@@ -35,3 +35,7 @@ export async function connectToDatabase() {
 
     return { client, db };
 }
+
+export async function closeToDatabase() {
+    cachedClient.close();
+}

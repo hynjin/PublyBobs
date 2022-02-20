@@ -1,5 +1,5 @@
 /* This example requires Tailwind CSS v2.0+ */
-import { Fragment, useState } from 'react';
+import { Fragment, useState, useEffect } from 'react';
 import { Listbox, Transition } from '@headlessui/react';
 import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 
@@ -48,7 +48,7 @@ export default function SelectRestaurant(
                             leaveTo="opacity-0"
                         >
                             <Listbox.Options className="absolute z-10 mt-1 w-full bg-white shadow-lg max-h-56 rounded-md py-1 text-base ring-1 ring-black ring-opacity-5 overflow-auto focus:outline-none sm:text-sm">
-                                {restaurants.map((restaurant) => (
+                                {restaurants?.map((restaurant) => (
                                     <Listbox.Option
                                         key={restaurant._id}
                                         className={({ active }) =>

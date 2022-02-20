@@ -1,6 +1,7 @@
 import { connectToDatabase } from '../../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import _ from 'lodash';
+import { ObjectId } from 'mongodb';
 
 const getAllMenus = async (db: any) => {
     return db.collection('menus').find({}).limit(200).toArray();
@@ -15,7 +16,11 @@ const addMenu = async (menu: any, db: any) => {
         console.log('+++ add menus post', menu);
         return db
             .collection('menus')
-            .insertOne({ ...menu, updated_at: new Date() });
+            .insertOne({
+                ...menu,
+                restaurant_id: new ObjectId(menu.restaurant_id),
+                updated_at: new Date(),
+            });
     } catch (e) {
         console.log('error at add menus');
     }

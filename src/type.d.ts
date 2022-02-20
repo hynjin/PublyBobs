@@ -15,7 +15,8 @@ declare type MenuType = {
 declare type DayilyMenuType = {
     _id: string;
     restaurant_id: string;
-    menus: string[];
+    restaurant_name: string;
+    menus: { [id: string]: MenuType };
     chef_id: string;
     updated_ad: string;
 };

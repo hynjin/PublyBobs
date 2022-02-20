@@ -19,17 +19,15 @@ const getAllDayilyMenusByRestaurantsId = async (
 };
 
 const addDayilyMenu = async (menus: any, db: any) => {
-    const oderId = new ObjectId('620e2e53d60ac2177a6c6ab5');
+    const chefId = new ObjectId('620e2e53d60ac2177a6c6ab5');
     try {
         console.log('+++ add dayilyMenus post', menus);
-        return db
-            .collection('dayilyMenus')
-            .insertOne({
-                ...menus,
-                restaurant_id: new ObjectId(menus.restaurant_id),
-                updated_at: new Date(),
-                chef_id: oderId,
-            });
+        return db.collection('dayilyMenus').insertOne({
+            ...menus,
+            restaurant_id: new ObjectId(menus.restaurant_id),
+            updated_at: new Date(),
+            chef_id: chefId,
+        });
     } catch (e) {
         console.log('error at add dayilyMenus');
     }

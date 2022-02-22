@@ -1,6 +1,7 @@
 import type { NextPage } from 'next';
 import styles from './styles/Home.module.css';
 import Link from 'next/link';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 // import { useRouter } from 'next/router'
 // import useSwr from 'swr'
@@ -57,5 +58,24 @@ const Home: NextPage = () => {
         </div>
     );
 };
+
+export async function getServerSideProps() {
+    let yesterDay = new Date();
+    yesterDay.setDate(yesterDay.getDate() - 1);
+    // const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
+    const result = await fetch('http://localhost:3003//api/users');
+    const dayilyMenus = await result.json();
+    // const dayilyMenus = await db.dayilyMenus.findOne({
+    //     updated_at: { $gt: yesterDay },
+    // });
+    // .limit(20)
+    // .toArray();
+
+    return {
+        props: {
+            dayilyMenus: JSON.parse(JSON.stringify(dayilyMenus)),
+        },
+    };
+}
 
 export default Home;

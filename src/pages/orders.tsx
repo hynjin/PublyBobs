@@ -93,10 +93,10 @@ export default function Orders(props: OderProps) {
 }
 
 export async function getServerSideProps() {
-    const { db } = await connectToDatabase();
+    const db = await connectToDatabase();
     let yesterDay = new Date();
     yesterDay.setDate(yesterDay.getDate() - 1);
-    const dayilyMenus = await db.collection('dayilyMenus').findOne({
+    const dayilyMenus = await db.dayilyMenus.findOne({
         updated_at: { $gt: yesterDay },
     });
     // .limit(20)

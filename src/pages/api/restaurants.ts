@@ -1,26 +1,27 @@
-import { connectToDatabase } from '../../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
+import connectToDatabase from '../../libraries/mongoose';
+import Restaurant from '../../models/Restaurant';
 
-const getAllRestaurants = async (db: any) => {
-    return db.collection('restaurants').find({}).limit(200).toArray();
+const getAllRestaurants = () => {
+    return Restaurant.find({}).limit(200);
 };
 
-const addRestaurant = async (restaurant: any, db: any) => {
+const addRestaurant = (restaurant: any) => {
     try {
         console.log('+++ add restaurants post', restaurant);
-        return await db.collection('restaurants').insertOne(restaurant);
+        return Restaurant.create(restaurant);
     } catch (e) {
         console.log('error at add rataurants');
     }
 };
 
-const deleteRestaurant = async (restaurant_id: any, db: any) => {
+const deleteRestaurant = (restaurant_id: any) => {
     try {
         console.log('+++ delete restaurants post', restaurant_id);
-        return await db
-            .collection('restaurants')
-            .findOneAndDelete({ _id: new ObjectId(restaurant_id) });
+        return Restaurant.findOneAndDelete({
+            _id: new ObjectId(restaurant_id),
+        });
     } catch (e) {
         console.log('error at add rataurants');
     }
@@ -31,27 +32,27 @@ export default async function restaurantHandler(
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
-    const { db, client } = await connectToDatabase();
+
+    await connectToDatabase();
 
     switch (method) {
         case 'GET':
-            const restaurants = getAllRestaurants(db);
+            const restaurants = await getAllRestaurants();
             res.status(200).json(restaurants);
             break;
         case 'POST':
             console.log('+++ call restaurants post');
-            const result = await addRestaurant(body, db);
+            const result = await addRestaurant(body);
             console.log('+++ result add restaurants post', result);
             res.status(200).json(result);
             break;
         case 'DELETE':
             const { restaurant_id } = body;
             console.log('+++ call restaurants delete', restaurant_id);
-            await deleteRestaurant(restaurant_id, db);
+            await deleteRestaurant(restaurant_id);
             break;
         default:
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
-    client.close();
 }

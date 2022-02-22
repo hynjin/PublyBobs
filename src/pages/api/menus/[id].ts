@@ -59,5 +59,4 @@ export default async function menusHandler(
             res.setHeader('Allow', ['GET']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
-    client.close();
 }

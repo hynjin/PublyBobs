@@ -1,28 +1,22 @@
-import { connectToDatabase } from '../../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import _ from 'lodash';
 import { ObjectId } from 'mongodb';
+import connectToDatabase from '../../libraries/mongoose';
+import DayilyMenu from '../../models/DayilyMenu';
+import _ from 'lodash';
 
-const getAllDayilyMenus = async (db: any) => {
-    return db.collection('dayilyMenus').find({}).limit(200).toArray();
+const getAllDayilyMenus = () => {
+    return DayilyMenu.find({}).limit(200);
 };
 
-const getAllDayilyMenusByRestaurantsId = async (
-    restaurant_id: any,
-    db: any
-) => {
-    return db
-        .collection('dayilyMenus')
-        .find({ restaurant_id })
-        .limit(200)
-        .toArray();
+const getAllDayilyMenusByRestaurantsId = (restaurant_id: any) => {
+    return DayilyMenu.find({ restaurant_id }).limit(200);
 };
 
-const addDayilyMenu = async (menus: any, db: any) => {
+const addDayilyMenu = (menus: any) => {
     const chefId = new ObjectId('620e2e53d60ac2177a6c6ab5');
     try {
         console.log('+++ add dayilyMenus post', menus);
-        return db.collection('dayilyMenus').insertOne({
+        return DayilyMenu.create({
             ...menus,
             restaurant_id: new ObjectId(menus.restaurant_id),
             updated_at: new Date(),
@@ -33,11 +27,9 @@ const addDayilyMenu = async (menus: any, db: any) => {
     }
 };
 
-const deleteDayilyMenu = async (memu_id: any, db: any) => {
+const deleteDayilyMenu = (memu_id: any) => {
     try {
-        return await db
-            .collection('dayilyMenus')
-            .findOneAndDelete({ _id: memu_id });
+        return DayilyMenu.findOneAndDelete({ _id: memu_id });
     } catch (e) {
         console.log('error at add dayilyMenus');
     }
@@ -48,31 +40,29 @@ export default async function dayilyMenusHandler(
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
-    const { db, client } = await connectToDatabase();
+
+    await connectToDatabase();
 
     switch (method) {
         case 'GET':
             const { restaurant_id } = query;
             const dayilyMenus = await getAllDayilyMenusByRestaurantsId(
-                restaurant_id,
-                db
+                restaurant_id
             );
             res.status(200).json(dayilyMenus);
             break;
         case 'POST':
             console.log('+++ call dayilyMenus post');
-            const result = await addDayilyMenu(body, db);
+            const result = await addDayilyMenu(body);
             res.status(200).json(result.insertedId);
             break;
         case 'DELETE':
             const { menu_id } = body;
             console.log('+++ call restaurants delete', menu_id);
-            await deleteDayilyMenu(menu_id, db);
+            await deleteDayilyMenu(menu_id);
             break;
         default:
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
-    client.close();
-    // db.close();
 }

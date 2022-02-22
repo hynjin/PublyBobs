@@ -1,22 +1,23 @@
-import { connectToDatabase } from '../../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import _ from 'lodash';
 import { ObjectId } from 'mongodb';
+import connectToDatabase from '../../libraries/mongoose';
+import Order from '../../models/Order';
+import _ from 'lodash';
 
-const getAllOrders = async (db: any) => {
-    return db.collection('orders').find({}).limit(200).toArray();
+const getAllOrders = () => {
+    return Order.find({}).limit(200);
 };
 
-const getAllOrdersByRestaurantsId = async (restaurant_id: any, db: any) => {
-    return db.collection('orders').find({ restaurant_id }).limit(200).toArray();
+const getAllOrdersByRestaurantsId = (restaurant_id: any) => {
+    return Order.find({ restaurant_id }).limit(200);
 };
 
-const addOrder = async (order: any, db: any) => {
+const addOrder = (order: any) => {
     const id = new ObjectId('620e2e53d60ac2177a6c6ab5');
 
     try {
         console.log('+++ add orders post', order);
-        return db.collection('orders').insertOne({
+        return Order.create({
             ...order,
             dayilyMenu_id: new ObjectId(order.dayilyMenu_id),
             orderer_id: id,
@@ -27,9 +28,9 @@ const addOrder = async (order: any, db: any) => {
     }
 };
 
-const deleteOrder = async (memu_id: any, db: any) => {
+const deleteOrder = (memu_id: any) => {
     try {
-        return await db.collection('orders').findOneAndDelete({ _id: memu_id });
+        return Order.findOneAndDelete({ _id: memu_id });
     } catch (e) {
         console.log('error at add orders');
     }
@@ -40,28 +41,27 @@ export default async function ordersHandler(
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
-    const { db, client } = await connectToDatabase();
+
+    await connectToDatabase();
 
     switch (method) {
         case 'GET':
             const { restaurant_id } = query;
-            const orders = await getAllOrdersByRestaurantsId(restaurant_id, db);
+            const orders = await getAllOrdersByRestaurantsId(restaurant_id);
             res.status(200).json(orders);
             break;
         case 'POST':
             console.log('+++ call menus post');
-            const result = await addOrder(body, db);
+            const result = await addOrder(body);
             res.status(200).json(result.insertedId);
             break;
         case 'DELETE':
             const { menu_id } = body;
             console.log('+++ call restaurants delete', menu_id);
-            await deleteOrder(menu_id, db);
+            await deleteOrder(menu_id);
             break;
         default:
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);
             res.status(405).end(`Method ${method} Not Allowed`);
     }
-    client.close();
-    // db.close();
 }

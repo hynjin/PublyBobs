@@ -27,17 +27,11 @@ export async function connectToDatabase() {
         return cachedDb.conn;
     }
 
-    // if (cachedClient && cachedDb) {
-    //     return { client: cachedClient, db: cachedDb };
-    // }
     if (!cachedDb.promise) {
         const opts = {
             useNewUrlParser: true,
             useUnifiedTopology: true,
             bufferCommands: false,
-            // bufferMaxEntries: 0,
-            // useFindAndModify: true,
-            // useCreateIndex: true,
         };
 
         cachedDb.promise = mongoose
@@ -46,25 +40,9 @@ export async function connectToDatabase() {
                 return mongoose;
             });
     }
-    console.log('+++ ??? ?!?!?');
+
     cachedDb.conn = await cachedDb.promise;
     return cachedDb.conn;
 }
 
-//     const client = await MongoClient.connect(uri, {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//     });
-
-//     const db = await client.db(dbName);
-
-//     cachedClient = client;
-//     cachedDb = db;
-
-//     return { client, db };
-// }
-
-// export async function closeToDatabase() {
-//     cachedClient.close();
-// }
 export default connectToDatabase;

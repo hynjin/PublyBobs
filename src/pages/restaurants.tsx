@@ -2,6 +2,7 @@ import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 import AddRestaurantForm from '../components/AddRestaurantForm';
 import { XIcon } from '@heroicons/react/outline';
+import _ from 'lodash';
 
 export default function Restaurants(props: { restaurants: RestaurantType[] }) {
     const { restaurants } = props;
@@ -36,7 +37,7 @@ export default function Restaurants(props: { restaurants: RestaurantType[] }) {
 
                 <div className="mt-10">
                     <dl className="space-y-10 md:space-y-0 md:grid md:grid-cols-2 md:gap-x-8 md:gap-y-10">
-                        {restaurants.map((restaurant) => (
+                        {_.map(restaurants, (restaurant) => (
                             <div
                                 key={restaurant.name}
                                 className="relative border-2 rounded-lg"
@@ -84,11 +85,8 @@ export default function Restaurants(props: { restaurants: RestaurantType[] }) {
 export async function getServerSideProps() {
     const { db } = await connectToDatabase();
 
-    const restaurants = await db
-        .collection('restaurants')
-        .find({})
-        // .limit(20)
-        .toArray();
+    const result = await fetch('http://localhost:3003//api/restaurants');
+    const restaurants = await result.json();
 
     return {
         props: {

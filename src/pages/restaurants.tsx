@@ -1,4 +1,4 @@
-import { connectToDatabase } from '../util/mongodb';
+import { GetServerSideProps } from 'next';
 import Link from 'next/link';
 import AddRestaurantForm from '../components/AddRestaurantForm';
 import { XIcon } from '@heroicons/react/outline';
@@ -82,15 +82,15 @@ export default function Restaurants(props: { restaurants: RestaurantType[] }) {
     );
 }
 
-export async function getServerSideProps() {
-    const { db } = await connectToDatabase();
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const baseUrl = `http://${ctx.req.headers.host}`;
 
-    const result = await fetch('http://localhost:3003//api/restaurants');
+    const result = await fetch(baseUrl + '/api/restaurants');
     const restaurants = await result.json();
 
     return {
         props: {
-            restaurants: JSON.parse(JSON.stringify(restaurants)),
+            restaurants,
         },
     };
-}
+};

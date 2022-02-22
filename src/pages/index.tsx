@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import type { NextPage } from 'next';
 import styles from './styles/Home.module.css';
 import Link from 'next/link';
@@ -59,23 +60,18 @@ const Home: NextPage = () => {
     );
 };
 
-export async function getServerSideProps() {
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const baseUrl = `http://${ctx.req.headers.host}`;
     let yesterDay = new Date();
     yesterDay.setDate(yesterDay.getDate() - 1);
-    // const baseUrl = req ? `${req.protocol}://${req.get('Host')}` : '';
-    const result = await fetch('http://localhost:3003//api/users');
-    const dayilyMenus = await result.json();
-    // const dayilyMenus = await db.dayilyMenus.findOne({
-    //     updated_at: { $gt: yesterDay },
-    // });
-    // .limit(20)
-    // .toArray();
+    const result = await await fetch(baseUrl + '/api/users');
+    const users = await result.json();
 
     return {
         props: {
-            dayilyMenus: JSON.parse(JSON.stringify(dayilyMenus)),
+            users,
         },
     };
-}
+};
 
 export default Home;

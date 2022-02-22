@@ -1,3 +1,4 @@
+import { GetServerSideProps } from 'next';
 import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 import _ from 'lodash';
@@ -92,19 +93,23 @@ export default function Orders(props: OderProps) {
     );
 }
 
-export async function getServerSideProps() {
-    const db = await connectToDatabase();
-    let yesterDay = new Date();
-    yesterDay.setDate(yesterDay.getDate() - 1);
-    const dayilyMenus = await db.dayilyMenus.findOne({
-        updated_at: { $gt: yesterDay },
-    });
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const baseUrl = `http://${ctx.req.headers.host}`;
+
+    const result = await fetch(baseUrl + '/api/dayilyMenus');
+    const dayilyMenus = await result.json();
+
+    // let yesterDay = new Date();
+    // yesterDay.setDate(yesterDay.getDate() - 1);
+    // const dayilyMenus = await db.dayilyMenus.findOne({
+    //     updated_at: { $gt: yesterDay },
+    // });
     // .limit(20)
     // .toArray();
 
     return {
         props: {
-            dayilyMenus: JSON.parse(JSON.stringify(dayilyMenus)),
+            dayilyMenus,
         },
     };
-}
+};

@@ -1,5 +1,5 @@
+import { GetServerSideProps } from 'next';
 import { useState, useEffect } from 'react';
-import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 import SelectRestaurant from '../components/SelectRestaurant';
 import _ from 'lodash';
@@ -241,25 +241,19 @@ export default function Menus(props: {
     );
 }
 
-export async function getServerSideProps() {
-    const { db } = await connectToDatabase();
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+    const baseUrl = `http://${ctx.req.headers.host}`;
 
-    const menus = await db
-        .collection('menus')
-        .find({})
-        // .limit(20)
-        .toArray();
+    const menuResult = await fetch(baseUrl + '/api/menus');
+    const menus = await menuResult.json();
 
-    const restaurants = await db
-        .collection('restaurants')
-        .find({})
-        // .limit(20)
-        .toArray();
+    const restaurantResult = await fetch(baseUrl + '/api/restaurants');
+    const restaurants = await restaurantResult.json();
 
     return {
         props: {
-            menus: JSON.parse(JSON.stringify(menus)),
-            restaurants: JSON.parse(JSON.stringify(restaurants)),
+            menus,
+            restaurants,
         },
     };
-}
+};

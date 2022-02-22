@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next';
-import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 import _ from 'lodash';
 import { useState } from 'react';
@@ -96,8 +95,9 @@ export default function Orders(props: OderProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const baseUrl = `http://${ctx.req.headers.host}`;
 
-    const result = await fetch(baseUrl + '/api/dayilyMenus');
-    const dayilyMenus = await result.json();
+    const dayilyMenus = await fetch(baseUrl + '/api/dayilyMenus').then((res) =>
+        res.json()
+    );
 
     // let yesterDay = new Date();
     // yesterDay.setDate(yesterDay.getDate() - 1);

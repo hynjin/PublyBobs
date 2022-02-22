@@ -244,11 +244,10 @@ export default function Menus(props: {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const baseUrl = `http://${ctx.req.headers.host}`;
 
-    const menuResult = await fetch(baseUrl + '/api/menus');
-    const menus = await menuResult.json();
-
-    const restaurantResult = await fetch(baseUrl + '/api/restaurants');
-    const restaurants = await restaurantResult.json();
+    const menus = await fetch(baseUrl + '/api/menus').then((res) => res.json());
+    const restaurants = await fetch(baseUrl + '/api/restaurants').then((res) =>
+        res.json()
+    );
 
     return {
         props: {

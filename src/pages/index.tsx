@@ -64,8 +64,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const baseUrl = `http://${ctx.req.headers.host}`;
     let yesterDay = new Date();
     yesterDay.setDate(yesterDay.getDate() - 1);
-    const result = await await fetch(baseUrl + '/api/users');
-    const users = await result.json();
+    const users = await await fetch(baseUrl + '/api/users').then((res) =>
+        res.json()
+    );
 
     return {
         props: {

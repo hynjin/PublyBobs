@@ -1,6 +1,5 @@
 import { GetServerSideProps } from 'next';
 import { useState, useEffect } from 'react';
-import { connectToDatabase } from '../util/mongodb';
 import Link from 'next/link';
 import { XIcon } from '@heroicons/react/outline';
 import SelectRestaurant from '../components/SelectRestaurant';
@@ -340,14 +339,13 @@ export default function DayilyMenus(props: DatypeMenuProps) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const baseUrl = `http://${ctx.req.headers.host}`;
 
-    const dayilyMenusResult = await fetch(baseUrl + '/api/dayilyMenus');
-    const dayilyMenus = await dayilyMenusResult.json();
-
-    const menusResult = await fetch(baseUrl + '/api/menus');
-    const menus = await menusResult.json();
-
-    const restaurantsResult = await fetch(baseUrl + '/api/restaurants');
-    const restaurants = await restaurantsResult.json();
+    const dayilyMenus = await fetch(baseUrl + '/api/dayilyMenus').then((res) =>
+        res.json()
+    );
+    const menus = await fetch(baseUrl + '/api/menus').then((res) => res.json());
+    const restaurants = await fetch(baseUrl + '/api/restaurants').then((res) =>
+        res.json()
+    );
 
     return {
         props: {

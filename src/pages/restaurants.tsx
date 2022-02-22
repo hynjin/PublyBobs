@@ -85,8 +85,9 @@ export default function Restaurants(props: { restaurants: RestaurantType[] }) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const baseUrl = `http://${ctx.req.headers.host}`;
 
-    const result = await fetch(baseUrl + '/api/restaurants');
-    const restaurants = await result.json();
+    const restaurants = await fetch(baseUrl + '/api/restaurants').then((res) =>
+        res.json()
+    );
 
     return {
         props: {

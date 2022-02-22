@@ -1,32 +1,29 @@
-import { connectToDatabase } from '../../../util/mongodb';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
+import connectToDatabase from '../../../libraries/mongoose';
+import Menu from '../../../models/Menu';
 
-const getAllMenus = async (db: any) => {
-    return db.collection('menus').find({}).limit(200).toArray();
+const getAllMenus = () => {
+    return Menu.find({}).limit(200);
 };
 
-const getAllMenusByRestaurantsId = async (restaurant_id: any, db: any) => {
-    return db
-        .collection('menus')
-        .find({ restaurant_id: new ObjectId(restaurant_id) })
-        .limit(200)
-        .toArray();
+const getAllMenusByRestaurantsId = async (restaurant_id: any) => {
+    return Menu.find({ restaurant_id: new ObjectId(restaurant_id) }).limit(200);
 };
 
-const addMenu = async (menu: any, db: any) => {
+const addMenu = async (menu: any) => {
     try {
         console.log('+++ add menus post', menu);
-        return await db.collection('menus').insertOne(menu);
+        return await Menu.create(menu);
     } catch (e) {
         console.log('error at add menus');
     }
 };
 
-const deleteMenu = async (memu_id: any, db: any) => {
+const deleteMenu = async (memu_id: any) => {
     try {
         console.log('+++ delete menus post', memu_id);
-        return await db.collection('menus').findOneAndDelete({ _id: memu_id });
+        return await Menu.findOneAndDelete({ _id: memu_id });
     } catch (e) {
         console.log('error at add menus');
     }
@@ -37,12 +34,12 @@ export default async function menusHandler(
     res: NextApiResponse
 ) {
     const { query, body, method } = req;
-    const { db, client } = await connectToDatabase();
+    await connectToDatabase();
 
     switch (method) {
         case 'GET':
             const { id } = query;
-            const menus = await getAllMenusByRestaurantsId(id, db);
+            const menus = await getAllMenusByRestaurantsId(id);
             res.status(200).json(menus);
             break;
         // case 'POST':

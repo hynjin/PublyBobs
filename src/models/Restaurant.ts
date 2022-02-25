@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 const RestaurantSchema = new mongoose.Schema({
     name: String,
     url: String,
-    description: String,
+    menus: [],
 });
 
 const Restaurant =

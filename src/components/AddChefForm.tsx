@@ -28,7 +28,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
             headers: { 'Content-Type': 'application/json' },
         });
         const resultChefs = await result.json();
-
+        console.log('+++ get chef', resultChefs, weekNumber);
         setChefs(resultChefs);
     }, [weekNumber]);
 

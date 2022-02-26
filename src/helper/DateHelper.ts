@@ -16,7 +16,7 @@ dayjs.extend(relativeTime);
 dayjs.extend(weekOfYear);
 dayjs.extend(utc);
 
-// dayjs.locale('ko');
+dayjs.locale('ko');
 // dayjs.locale({ weekStart: 1 });
 
 const DEFAULT_DATE_STRING_FORMAT = 'YYYY-MM-DD HH:mm:ss';

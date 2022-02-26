@@ -65,14 +65,15 @@ export default function News() {
     // });
     // const watchWeek = weekFormHandlers.watch();
     // console.log('++++ watch', watchWeek);
+
     const getChefs = useCallback(async () => {
-        const query = `?weekNumber=${weekNumber}`;
-        const result = await fetch(`http://localhost:3000/api/chefs` + query, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        const resultChefs = await result.json();
-        setChefOfWeek(resultChefs);
+        // const query = `?weekNumber=${weekNumber}`;
+        // const result = await fetch(`http://127.0.0.1:3000/api/chefs` + query, {
+        //     method: 'GET',
+        //     headers: { 'Content-Type': 'application/json' },
+        // });
+        // const resultChefs = await result.json();
+        // setChefOfWeek(resultChefs);
     }, [weekNumber]);
 
     const chefs = getChefs();
@@ -112,7 +113,7 @@ export default function News() {
             <div className={styles.grid}>
                 <AddChefForm
                     date={selectedDay}
-                    chefs={chefOfWeek}
+                    // chefs={chefOfWeek}
                     weekNumber={weekNumber}
                 />
             </div>

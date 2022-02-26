@@ -16,6 +16,7 @@ import Calendar from '../components/Calendar';
 import Week from '../components/Week';
 import { ConnectionClosedEvent } from 'mongodb';
 import { useForm, useWatch, Control } from 'react-hook-form';
+import * as ChefAPI from '../api/Chef';
 
 // import { useRouter } from 'next/router'
 // import useSwr from 'swr'
@@ -64,19 +65,20 @@ export default function News(props: { chefs: any }) {
     // });
     // const watchWeek = weekFormHandlers.watch();
     // console.log('++++ watch', watchWeek);
-    const getChefs = useCallback(async () => {
-        const query = `?weekNumber=${weekNumber}`;
-        const result = await fetch(`http://localhost:3000/api/chefs` + query, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        const resultChefs = await result.json();
-        setChefOfWeek(resultChefs);
-    }, [weekNumber]);
 
-    useEffect(() => {
-        getChefs();
-    }, [weekNumber]);
+    // const getChefs = useCallback(async () => {
+    //     const query = `?weekNumber=${weekNumber}`;
+    //     const result = await fetch(`http://127.0.0.1:3000/api/chefs` + query, {
+    //         method: 'GET',
+    //         headers: { 'Content-Type': 'application/json' },
+    //     });
+    //     const resultChefs = await ChefAPI.getChef({ weekNumber });
+    //     setChefOfWeek(resultChefs.data);
+    // }, [weekNumber]);
+
+    // useEffect(() => {
+    //     getChefs();
+    // }, [weekNumber]);
 
     return (
         <div className={styles.container}>
@@ -103,7 +105,7 @@ export default function News(props: { chefs: any }) {
             <div className={styles.grid}>
                 <AddChefForm
                     date={selectedDay}
-                    chefs={chefOfWeek}
+                    // chefs={chefOfWeek}
                     weekNumber={weekNumber}
                 />
             </div>
@@ -114,7 +116,7 @@ export default function News(props: { chefs: any }) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const baseUrl = `http://${ctx.req.headers.host}`;
     const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
-
+    console.log('???');
     return {
         props: {
             chefs,

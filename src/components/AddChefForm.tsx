@@ -1,17 +1,18 @@
 import _ from 'lodash';
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as DateHelper from '../helper/DateHelper';
 
 type AddChefProps = {
     date: DateHelper.ConfigType;
-    chefs: any[];
+    // chefs: any[];
     weekNumber: number;
 };
 
 export default function AddChefForm(props: AddChefProps): JSX.Element {
-    const { date, chefs, weekNumber } = props;
+    const { date, weekNumber } = props;
     const daysOfWeek = DateHelper.getWeekDayList().slice(1, 6);
+    const [chefs, setChefs] = useState<any[]>([]);
 
     const {
         register,
@@ -20,11 +21,27 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         formState: { isSubmitting, isSubmitted, isDirty },
     } = useForm({});
 
+    const getChefs = useCallback(async () => {
+        const query = `?weekNumber=${weekNumber}`;
+        const result = await fetch(`/api/chefs` + query, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const resultChefs = await result.json();
+
+        setChefs(resultChefs);
+    }, [weekNumber]);
+
+    // const chefs = getChefs();
     useEffect(() => {
         _.map(daysOfWeek, (day, i) => {
             setValue(i.toString(), chefs[i]?.chef);
         });
     }, [chefs]);
+
+    useEffect(() => {
+        getChefs();
+    }, [weekNumber]);
 
     const onClickAddChef = useCallback(
         async (data: any) => {

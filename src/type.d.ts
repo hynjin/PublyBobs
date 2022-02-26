@@ -27,4 +27,19 @@ declare type OrderType = {
     order_id: string;
     choose_id: string;
     updated_at: string;
+    chef: ChefType;
+    date: DateType;
+};
+
+declare type ChefType = {
+    name: string;
+    profile_image: any;
+};
+
+declare type DateType = {
+    day_of_week: number;
+    weekNumber: number;
+    year: number;
+    month: number;
+    day: number;
 };

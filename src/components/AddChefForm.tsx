@@ -1,38 +1,51 @@
 import _ from 'lodash';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import * as DateHelper from '../helper/DateHelper';
 
 type AddChefProps = {
     date: DateHelper.ConfigType;
+    chefs: any[];
+    weekNumber: number;
 };
 
 export default function AddChefForm(props: AddChefProps): JSX.Element {
-    const { date } = props;
+    const { date, chefs, weekNumber } = props;
+    const daysOfWeek = DateHelper.getWeekDayList().slice(1, 6);
+
     const {
         register,
+        setValue,
         handleSubmit,
-        formState: { isSubmitting },
-    } = useForm();
+        formState: { isSubmitting, isSubmitted, isDirty },
+    } = useForm({});
 
-    const onClickAddRestaurant = useCallback(async (data: any) => {
-        const { daysOfWeek } = data;
-        console.log('+++', date);
-        await fetch('/api/chefs', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                date: DateHelper.getDay(date),
-                chef: daysOfWeek,
-            }),
+    useEffect(() => {
+        _.map(daysOfWeek, (day, i) => {
+            setValue(i.toString(), chefs[i]?.chef);
         });
-    }, []);
+    }, [chefs]);
 
-    const daysOfWeek = DateHelper.getWeekDayList().slice(1, 6);
+    const onClickAddChef = useCallback(
+        async (data: any) => {
+            const { daysOfWeek } = data;
+            console.log('+++ click', data);
+            await fetch('/api/chefs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    date,
+                    chefs: data,
+                    weekNumber: weekNumber,
+                }),
+            });
+        },
+        [date]
+    );
 
     return (
         <form
-            onSubmit={handleSubmit(onClickAddRestaurant)}
+            onSubmit={handleSubmit(onClickAddChef)}
             className="lg:mx-auto max-w-xl lg:px-8 mt-4"
         >
             {_.map(daysOfWeek, (item, index) => {
@@ -43,8 +56,8 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                                 className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                                 id={`add-chef-${index}`}
                                 type="text"
-                                placeholder={daysOfWeek[index]}
-                                {...register(`daysOfWeek[${index}]` as const)}
+                                placeholder={item}
+                                {...register(`${index}`)}
                             />
                         </section>
                     </div>
@@ -55,7 +68,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                 type="submit"
                 disabled={isSubmitting}
             >
-                주문자 추가
+                {chefs.length > 0 ? '주문자 변경' : '주문자 추가'}
             </button>
         </form>
     );

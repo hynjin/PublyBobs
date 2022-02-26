@@ -7,6 +7,7 @@ import weekOfYear from 'dayjs/plugin/weekOfYear';
 import utc from 'dayjs/plugin/utc';
 import _ from 'lodash';
 import 'dayjs/locale/ko';
+import { ArrowNarrowLeftIcon } from '@heroicons/react/outline';
 
 dayjs.extend(advancedFormat);
 dayjs.extend(localizedFormat);
@@ -91,12 +92,33 @@ export function getEndOfWeek(dateTime: ConfigType = now()) {
 export function getWeekNumber(dateTiem: ConfigType = now()) {
     return dayjs(dateTiem).week();
 }
+// export function getDateRangeOfWeek(dateTime: ConfigType = now()) {
+// 	const week = dayjs(dateTime).week();
+//     const mon = dayjs().week(week).startOf('week').add(1, 'd');
+//     const fri = dayjs().week(week).startOf('week').add(5, 'd');
 export function getDateRangeOfWeek(weekNumber: number) {
     const mon = dayjs().week(weekNumber).startOf('week').add(1, 'd');
     const fri = dayjs().week(weekNumber).startOf('week').add(5, 'd');
 
     return { mon, fri };
 }
+export function getWorkDayRangeOfWeek(weekNumber: number) {
+    return _.map(_.range(5), (d, i) => {
+        return dayjs()
+            .week(weekNumber)
+            .startOf('week')
+            .add(i + 1, 'd');
+    });
+}
+
+export function getMonday(dateTime: ConfigType = now()) {
+    return dayjs(dateTime).startOf('week').add(1, 'd');
+}
+
+export function getFriday(dateTime: ConfigType = now()) {
+    return dayjs(dateTime).startOf('week').add(5, 'd');
+}
+
 export function isStartBeforeEnd(
     startDate: ConfigType = now(),
     endDate: ConfigType = now()
@@ -151,4 +173,27 @@ export function isValid(dateTime?: ConfigType | null) {
 
 export function getWeekDayList() {
     return dayjs.weekdays();
+}
+
+export function getDateFromPart(props: {
+    year: number;
+    month: number;
+    day: number;
+}) {
+    return dayjs(props.year + '-' + props.month + '-' + props.day);
+}
+
+export function getPartFromDate(dateTime: ConfigType = now()) {
+    return {
+        year: _.toNumber(dayjs(dateTime).get('y')),
+        month: _.toNumber(dayjs(dateTime).get('month')) + 1,
+        day: _.toNumber(dayjs(dateTime).get('date')),
+    };
+}
+
+export function isSameDay(
+    firstDate: ConfigType = now(),
+    secondDate: ConfigType = now()
+) {
+    return dayjs(firstDate).isSame(secondDate, 'd');
 }

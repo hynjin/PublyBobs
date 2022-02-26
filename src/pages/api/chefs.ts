@@ -7,49 +7,54 @@ import _ from 'lodash';
 // 오늘의 주문을 담당한 쉐프!
 // 날짜별로 지정
 const getChef = (prams: any) => {
-    const { weekAgo = 0 } = prams;
-
-    const startOfWeek = DateHelper.getDateRangeOfWeek(weekAgo);
-    const endOfWeek = DateHelper.getDateRangeOfWeek(weekAgo);
+    const { weekNumber } = prams;
+    const weekNum = DateHelper.getWeekNumber();
+    const rangeOfWeek = DateHelper.getDateRangeOfWeek(weekNumber ?? weekNum);
     try {
-        console.log('+++ get chef post', startOfWeek, '~', endOfWeek);
         return Order.find(
-            { order_at: { $gte: startOfWeek, $lte: endOfWeek } },
-            { day: true, chef: true, order_at: true }
-        );
+            {
+                order_at: {
+                    $gte: DateHelper.toDate(rangeOfWeek.mon),
+                    $lte: DateHelper.toDate(rangeOfWeek.fri),
+                },
+            },
+            { date: true, chef: true, order_at: true }
+        ).sort({ 'date.day_of_week': 1 });
     } catch (e) {
         console.log('error at get chef');
     }
 };
 
 const addChef = (prams: any) => {
-    const { weekNumber, chef } = prams;
-    const weekNumberOrToday = DateHelper.getWeekNumber();
-    const { mon, fri } = DateHelper.getDateRangeOfWeek(
-        weekNumber ?? weekNumberOrToday
-    );
+    const { date, chefs } = prams;
+    const weekNumber = DateHelper.getWeekNumber(date);
+    const { mon } = DateHelper.getDateRangeOfWeek(weekNumber);
 
     try {
-        console.log(
-            '+++ add chef post',
-            weekNumber,
-            chef,
-            DateHelper.getDateByFormat(mon),
-            DateHelper.getDateByFormat(fri)
-        );
-        _.map(chef, async (c, index) => {
+        _.map(chefs, async (chef, index) => {
             const order_at = DateHelper.addDay(mon, _.toNumber(index));
-            const day_of_week = index;
+
+            const date = {
+                day_of_week: _.toNumber(index),
+                weekNumber: weekNumber,
+                year: DateHelper.getYear(order_at),
+                month: DateHelper.getMonth(order_at),
+                day: DateHelper.getDay(order_at),
+            };
             await Order.updateOne(
                 { order_at },
                 {
                     $set: {
-                        chef: c,
-                        day_of_week: _.toNumber(index),
+                        chef,
+                        date,
                     },
                 },
                 {
                     upsert: true,
+                    collation: {
+                        locale: 'ko',
+                        numericOrdering: true,
+                    },
                 }
             );
         });
@@ -68,12 +73,12 @@ export default async function chefHandler(
 
     switch (method) {
         case 'GET':
-            const chefs = await getChef(body);
+            const chefs = await getChef(query);
             res.status(200).json(chefs);
             break;
         case 'POST':
             const result = await addChef(body);
-            console.log('+++ result add restaurants post', result);
+            console.log('+++ result add order post', result);
             res.status(200).json(result);
             break;
         default:

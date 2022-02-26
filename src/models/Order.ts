@@ -5,10 +5,15 @@ import Menus from './Menu';
 const OrderSchema = new mongoose.Schema({
     restaurant: { _id: ObjectId, name: String },
     menus: [],
-    chef: [],
+    chef: { _id: ObjectId, name: String, profile_image: String },
     order_at: Date,
-    day_of_week: String,
-    test: String,
+    date: {
+        day_of_week: Number,
+        weekNumber: Number,
+        year: Number,
+        month: Number,
+        day: Number,
+    },
 });
 
 const Order = mongoose.models.Order || mongoose.model('Order', OrderSchema);

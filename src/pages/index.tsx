@@ -1,14 +1,22 @@
 import { GetServerSideProps } from 'next';
 import type { NextPage } from 'next';
+import React, {
+    useState,
+    useCallback,
+    useRef,
+    useEffect,
+    useLayoutEffect,
+} from 'react';
 import styles from './styles/Home.module.css';
 import Link from 'next/link';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import React, { useState } from 'react';
-
-import 'react-modern-calendar-datepicker/lib/DatePicker.css';
-import { Calendar, DayValue } from 'react-modern-calendar-datepicker';
+import AddChefForm from '../components/AddChefForm';
 import * as DateHelper from '../helper/DateHelper';
-import _ from 'lodash';
+import Calendar from '../components/Calendar';
+import Week from '../components/Week';
+import { ConnectionClosedEvent } from 'mongodb';
+import { useForm, useWatch, Control } from 'react-hook-form';
+
 // import { useRouter } from 'next/router'
 // import useSwr from 'swr'
 
@@ -27,111 +35,85 @@ import _ from 'lodash';
 //   return <div>{data.name}</div>
 // }
 
-const Home: NextPage = () => {
-    const App = () => {
-        const getMonday = (e?: DayValue) => {
-            const current = DateHelper.getDateFromPart(e ?? defaultValue);
-            const monday = DateHelper.getMonday(current);
-            return monday;
-        };
+export default function News(props: { chefs: any }) {
+    // const { chefs } = props;
+    const today = DateHelper.getDateByFormat();
+    const [chefOfWeek, setChefOfWeek] = useState([]);
+    const [weekNumber, setWeekNumber] = useState(DateHelper.getWeekNumber());
+    const onChangeWeekNumber = useCallback((num: number) => {
+        setWeekNumber(num);
+    }, []);
+    const [selectedDay, setSelectedDay] = useState(today);
+    const onSelectedDay = useCallback((day: any) => {
+        setSelectedDay(day);
+    }, []);
 
-        const rangeDate = (mon: string) => {
-            return _.map(_.range(5), (index) => {
-                const dateTime = DateHelper.addDay(mon, index);
-                return {
-                    year: DateHelper.getYear(dateTime),
-                    month: DateHelper.getMonth(dateTime) + 1,
-                    day: DateHelper.getDay(dateTime),
-                    className: 'bg-slate-400',
-                };
-            });
-        };
+    const {
+        register,
+        handleSubmit,
+        formState: { isSubmitting },
+    } = useForm();
 
-        const defaultValue = {
-            year: DateHelper.getYear(),
-            month: DateHelper.getMonth() + 1,
-            day: DateHelper.getDay(),
-        };
-        const defaultRange = rangeDate(getMonday().toString());
+    const onSubmit = (data: any) => console.log(data);
+    // const weekFormHandlers = useForm({
+    //     mode: 'onChange',
+    //     defaultValues: {
+    //         dateRange: DateHelper.getDateRangeOfWeek(weekNumber),
+    //         seletedDay: DateHelper.getDay(today),
+    //     },
+    // });
+    // const watchWeek = weekFormHandlers.watch();
+    // console.log('++++ watch', watchWeek);
+    const getChefs = useCallback(async () => {
+        const query = `?weekNumber=${weekNumber}`;
+        const result = await fetch(`/api/chefs` + query, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const resultChefs = await result.json();
+        setChefOfWeek(resultChefs);
+    }, [weekNumber]);
 
-        const [selectedDay, setSelectedDay] = useState<DayValue>(defaultValue);
-        const [dayRange, setDayRange] = useState<
-            {
-                year: number | undefined;
-                month: number | undefined;
-                day: number;
-                className: string;
-            }[]
-        >(defaultRange);
+    useEffect(() => {
+        getChefs();
+    }, [weekNumber]);
 
-        return (
-            <div className="shadow-none">
-                <Calendar
-                    value={selectedDay}
-                    onChange={(e) => {
-                        setSelectedDay(e);
-                        setDayRange(rangeDate(getMonday(e).toString()));
-                    }}
-                    colorPrimary="#9c88ff"
-                    calendarClassName="custom-calendar"
-                    calendarTodayClassName="custom-today-day"
-                    shouldHighlightWeekends
-                    customDaysClassName={dayRange} //일단 무시
-                />
-            </div>
-        );
-    };
     return (
         <div className={styles.container}>
-            <h1 className={styles.title}>Coming soon Publy Bobs!</h1>
-            <p className={styles.description}>
-                Get started by editing{' '}
-                <code className={styles.code}>src/pages/index.js</code>
-            </p>
+            <div className="lg:text-center">
+                <p className="mt-2 text-3xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl">
+                    오늘의 메뉴!
+                </p>
+                <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                    주문 받아용
+                </p>
+            </div>
+            <div className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
+                <Week
+                    menus={[]}
+                    weekNumber={weekNumber}
+                    setWeekNumber={onChangeWeekNumber}
+                    selectedDay={selectedDay}
+                    setSelectedDay={onSelectedDay}
+                />
+            </div>
             <div className={styles.grid}>
-                <App />
-                <Link href="/restaurants">
-                    <a className={styles.card}>
-                        <h2>식당 &rarr;</h2>
-                        <p>MongoDB애 저장되어 있는 식당 목록</p>
-                    </a>
-                </Link>
-                <Link href="/menus">
-                    <a className={styles.card}>
-                        <h2>메뉴 &rarr;</h2>
-                        <p>MongoDB애 저장되어 있는 메뉴 목록</p>
-                    </a>
-                </Link>
-                <Link href="/orders">
-                    <a className={styles.card}>
-                        <h2>주문 &rarr;</h2>
-                        <p>MongoDB애 저장되어 있는 주문 목록</p>
-                    </a>
-                </Link>
-                <Link href="/dayilyMenus">
-                    <a className={styles.card}>
-                        <h2>오늘의 메뉴 &rarr;</h2>
-                        <p>MongoDB애 저장되어 있는 오늘의 메뉴 목록</p>
-                    </a>
-                </Link>
-                <Link href="/bobNews">
-                    <a className={styles.card}>
-                        <h2>bob new &rarr;</h2>
-                        <p>MongoDB애 저장되어 있는 오늘의 메뉴 목록</p>
-                    </a>
-                </Link>
+                <Calendar />
+            </div>
+            <div className={styles.grid}>
+                <AddChefForm
+                    date={selectedDay}
+                    chefs={chefOfWeek}
+                    weekNumber={weekNumber}
+                />
             </div>
         </div>
     );
-};
+}
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const baseUrl = `http://${ctx.req.headers.host}`;
-    let yesterDay = new Date();
-    yesterDay.setDate(yesterDay.getDate() - 1);
-    const chefs = await await fetch(baseUrl + '/api/chefs').then((res) =>
-        res.json()
-    );
+    const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
 
     return {
         props: {
@@ -139,5 +121,3 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
         },
     };
 };
-
-export default Home;

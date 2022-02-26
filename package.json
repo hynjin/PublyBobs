@@ -4,13 +4,12 @@
     "scripts": {
         "dev": "next dev",
         "build": "next build",
-        "start": "next start",
-        "export": "next export"
+        "start": "next start"
     },
-    "homepage": "http://hynjin.github.io/PublyBobs",
     "dependencies": {
         "@headlessui/react": "^1.5.0",
         "@heroicons/react": "^1.0.5",
+        "axios": "^0.26.0",
         "dayjs": "^1.10.7",
         "lodash": "^4.17.21",
         "mongodb": "^4.1.3",

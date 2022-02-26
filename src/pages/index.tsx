@@ -66,7 +66,7 @@ export default function News(props: { chefs: any }) {
     // console.log('++++ watch', watchWeek);
     const getChefs = useCallback(async () => {
         const query = `?weekNumber=${weekNumber}`;
-        const result = await fetch(`/api/chefs` + query, {
+        const result = await fetch(`http://localhost:3002/api/chefs` + query, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         });

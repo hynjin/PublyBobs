@@ -35,7 +35,8 @@ import { useForm, useWatch, Control } from 'react-hook-form';
 //   return <div>{data.name}</div>
 // }
 
-export default function News(props: { chefs: any }) {
+//props: { chefs: any }
+export default function News() {
     // const { chefs } = props;
     const today = DateHelper.getDateByFormat();
     const [chefOfWeek, setChefOfWeek] = useState([]);
@@ -74,6 +75,7 @@ export default function News(props: { chefs: any }) {
         setChefOfWeek(resultChefs);
     }, [weekNumber]);
 
+    const chefs = getChefs();
     useEffect(() => {
         getChefs();
     }, [weekNumber]);
@@ -118,13 +120,13 @@ export default function News(props: { chefs: any }) {
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const baseUrl = `http://${ctx.req.headers.host}`;
-    const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//     // const baseUrl = `http://${ctx.req.headers.host}`;
+//     // const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
 
-    return {
-        props: {
-            chefs,
-        },
-    };
-};
+//     return {
+//         props: {
+//             chefs: [],
+//         },
+//     };
+// };

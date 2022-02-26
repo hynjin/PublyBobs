@@ -76,7 +76,7 @@ const Home: NextPage = () => {
                     calendarClassName="custom-calendar"
                     calendarTodayClassName="custom-today-day"
                     shouldHighlightWeekends
-                    customDaysClassName={dayRange} //일단 무시
+                    // customDaysClassName={dayRange} //일단 무시
                 />
             </div>
         );

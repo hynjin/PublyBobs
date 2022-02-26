@@ -336,22 +336,22 @@ export default function DayilyMenus(props: DatypeMenuProps) {
     );
 }
 
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const baseUrl = `http://${ctx.req.headers.host}`;
+// export const getServerSideProps: GetServerSideProps = async (ctx) => {
+//     const baseUrl = `http://${ctx.req.headers.host}`;
 
-    const dayilyMenus = await fetch(baseUrl + '/api/dayilyMenus').then((res) =>
-        res.json()
-    );
-    const menus = await fetch(baseUrl + '/api/menus').then((res) => res.json());
-    const restaurants = await fetch(baseUrl + '/api/restaurants').then((res) =>
-        res.json()
-    );
+//     const dayilyMenus = await fetch(baseUrl + '/api/dayilyMenus').then((res) =>
+//         res.json()
+//     );
+//     const menus = await fetch(baseUrl + '/api/menus').then((res) => res.json());
+//     const restaurants = await fetch(baseUrl + '/api/restaurants').then((res) =>
+//         res.json()
+//     );
 
-    return {
-        props: {
-            dayilyMenus,
-            menus,
-            restaurants,
-        },
-    };
-};
+//     return {
+//         props: {
+//             dayilyMenus,
+//             menus,
+//             restaurants,
+//         },
+//     };
+// };

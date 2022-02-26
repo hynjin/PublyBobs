@@ -67,10 +67,13 @@ export default function News() {
     // console.log('++++ watch', watchWeek);
     const getChefs = useCallback(async () => {
         const query = `?weekNumber=${weekNumber}`;
-        const result = await fetch(`/api/chefs` + query, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
+        const result = await fetch(
+            `http://hynjin.github.io/PublyBobs/api/chefs` + query,
+            {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' },
+            }
+        );
         const resultChefs = await result.json();
         setChefOfWeek(resultChefs);
     }, [weekNumber]);

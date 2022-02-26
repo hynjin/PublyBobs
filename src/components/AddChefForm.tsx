@@ -30,7 +30,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         async (data: any) => {
             const { daysOfWeek } = data;
             console.log('+++ click', data);
-            await fetch('/api/chefs', {
+            await fetch('http://hynjin.github.io/PublyBobs/api/chefs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({

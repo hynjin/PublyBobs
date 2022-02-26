@@ -355,3 +355,5 @@ export default function DayilyMenus(props: DatypeMenuProps) {
 //         },
 //     };
 // };
+
+export const dayilyMenu = {};

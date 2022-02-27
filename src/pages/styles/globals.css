@@ -1,3 +1,88 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+* {
+    font-family: 'MaruBuri', 'ChosunSm', 'MS Serif', 'New York', 'Times New Roman', Times, serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-wrap: break-word;
+    word-break: keep-all;
+    box-sizing: border-box;
+}
+
+@layer base {
+    html, body { @apply text-gray-900 }
+    h1, h2, h3, h4, h5, h6 {
+        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
+        @apply text-gray-700;
+    }
+    h1 { @apply text-6xl }
+    h2 { @apply text-4xl }
+    h3 { @apply text-2xl }
+    h4 { @apply text-lg }
+    h5 { @apply text-base }
+    h6 { @apply text-sm }
+    p, span { @apply leading-normal }
+    button { @apply focus:ring-0 }
+    input[type='text'],
+    input[type='password'],
+    textarea {
+        @apply bg-white p-3 border text-sm placeholder-gray-500 disabled:bg-gray-50;
+    }
+    input:focus,
+    textarea:focus {
+        @apply outline-none ring-0;
+    }
+    input:focus[readonly] {
+        @apply ring-0;
+    }
+}
+
+@layer components {
+    .border {
+        @apply border-gray-700;
+    }
+    .divide-x {
+        @apply divide-gray-300;
+    }
+    .divide-y {
+        @apply divide-gray-700;
+    }
+    .divide-y.divide-more{
+        @apply divide-gray-100;
+    }
+    input.error {
+        @apply border-red-700;
+    }
+    .description {
+        @apply text-xs;
+    }
+    .description.error {
+        @apply text-red-700 text-sm mt-1;
+    }
+    .btn {
+        @apply py-2 px-4 bg-primary border border-primary text-sm text-white focus:ring-0;
+    }
+    .btn-block {
+        @apply flex-1;
+    }
+    .btn-ghost {
+        @apply bg-transparent text-primary hover:bg-primary/10;
+    }
+    .btn-ghost.btn-gray {
+        @apply border-gray-700 text-gray-700 hover:bg-gray-50;
+    }
+    .btn-text {
+        @apply underline;
+    }
+    .triangle-down {
+        @apply w-0 h-0;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 5px solid currentColor;
+    }
+}
+
+@layer utilities {
+}

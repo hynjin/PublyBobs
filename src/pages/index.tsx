@@ -45,7 +45,7 @@ export default function News(props: { chefs: any }) {
                     오늘의 메뉴!
                 </p>
                 <p className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">
-                    주문 받아용
+                    주문 아직 안 받아용
                 </p>
             </div>
             <div className="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">

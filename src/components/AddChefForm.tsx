@@ -1,6 +1,8 @@
 import _ from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { Fragment, useCallback, useEffect, useState } from 'react';
+import { Combobox, Transition } from '@headlessui/react'
 import { useForm } from 'react-hook-form';
+import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
 import * as DateHelper from '../helper/DateHelper';
 
 type AddChefProps = {
@@ -60,14 +62,17 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         [date]
     );
 
+    const [selected, setSelected] = useState(chefs[0])
+
     return (
         <form
             onSubmit={handleSubmit(onClickAddChef)}
-            className="lg:mx-auto max-w-xl lg:px-8 mt-4"
+            className="text-center"
         >
             {_.map(daysOfWeek, (item, index) => {
                 return (
-                    <div key={index} className="md:flex md:items-center mb-6">
+                    // TODO: combobox로 바꾸기
+                    <div key={index} className="flex-1 mb-2">
                         <section className={'section'} key={index}>
                             <input
                                 className=""
@@ -81,7 +86,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                 );
             })}
             <button
-                className="disabled:bg-purple-400 shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                className="btn btn-ghost"
                 type="submit"
                 disabled={isSubmitting}
             >

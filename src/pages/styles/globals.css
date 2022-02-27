@@ -28,7 +28,7 @@
     input[type='text'],
     input[type='password'],
     textarea {
-        @apply bg-white p-3 border text-sm placeholder-gray-500 disabled:bg-gray-50;
+        @apply bg-white p-3 border border-gray-700 text-sm text-gray-900 placeholder-gray-300 disabled:bg-gray-50;
     }
     input:focus,
     textarea:focus {

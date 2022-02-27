@@ -54,7 +54,7 @@ export default function Week(props: weekProps) {
                                 */}
                                 <p className={`
                                     mb-1 rounded-full w-10 h-10 flex justify-center items-center text-lg
-                                    ${selectedDay ? 'bg-primary text-white font-bold' : 'bg-transparent text-gray-500'}
+                                    ${selectedDay ? 'bg-primary text-white font-bold' : 'bg-transparent text-gray-500 hover:bg-primary/10'}
                                 `}>
                                     {DateHelper.getDay(
                                         wholeDay[index]

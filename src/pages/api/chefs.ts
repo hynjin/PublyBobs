@@ -29,7 +29,7 @@ const addChef = (prams: any) => {
     const { date, chefs } = prams;
     const weekNumber = DateHelper.getWeekNumber(date);
     const { mon } = DateHelper.getDateRangeOfWeek(weekNumber);
-
+    console.log('+++', chefs);
     try {
         _.map(chefs, async (chef, index) => {
             const order_at = DateHelper.addDay(mon, _.toNumber(index));

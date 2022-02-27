@@ -18,28 +18,9 @@ import { ConnectionClosedEvent } from 'mongodb';
 import { useForm, useWatch, Control } from 'react-hook-form';
 import * as ChefAPI from '../api/Chef';
 
-// import { useRouter } from 'next/router'
-// import useSwr from 'swr'
-
-// const fetcher = (url) => fetch(url).then((res) => res.json())
-
-// export default function User() {
-//   const router = useRouter()
-//   const { data, error } = useSwr(
-//     router.query.id ? `/api/user/${router.query.id}` : null,
-//     fetcher
-//   )
-
-//   if (error) return <div>Failed to load user</div>
-//   if (!data) return <div>Loading...</div>
-
-//   return <div>{data.name}</div>
-// }
-
 export default function News(props: { chefs: any }) {
     // const { chefs } = props;
     const today = DateHelper.getDateByFormat();
-    const [chefOfWeek, setChefOfWeek] = useState([]);
     const [weekNumber, setWeekNumber] = useState(DateHelper.getWeekNumber());
     const onChangeWeekNumber = useCallback((num: number) => {
         setWeekNumber(num);
@@ -56,29 +37,6 @@ export default function News(props: { chefs: any }) {
     } = useForm();
 
     const onSubmit = (data: any) => console.log(data);
-    // const weekFormHandlers = useForm({
-    //     mode: 'onChange',
-    //     defaultValues: {
-    //         dateRange: DateHelper.getDateRangeOfWeek(weekNumber),
-    //         seletedDay: DateHelper.getDay(today),
-    //     },
-    // });
-    // const watchWeek = weekFormHandlers.watch();
-    // console.log('++++ watch', watchWeek);
-
-    // const getChefs = useCallback(async () => {
-    //     const query = `?weekNumber=${weekNumber}`;
-    //     const result = await fetch(`http://127.0.0.1:3000/api/chefs` + query, {
-    //         method: 'GET',
-    //         headers: { 'Content-Type': 'application/json' },
-    //     });
-    //     const resultChefs = await ChefAPI.getChef({ weekNumber });
-    //     setChefOfWeek(resultChefs.data);
-    // }, [weekNumber]);
-
-    // useEffect(() => {
-    //     getChefs();
-    // }, [weekNumber]);
 
     return (
         <div className={styles.container}>
@@ -103,11 +61,7 @@ export default function News(props: { chefs: any }) {
                 <Calendar />
             </div>
             <div className={styles.grid}>
-                <AddChefForm
-                    date={selectedDay}
-                    // chefs={chefOfWeek}
-                    weekNumber={weekNumber}
-                />
+                <AddChefForm date={selectedDay} weekNumber={weekNumber} />
             </div>
         </div>
     );
@@ -116,7 +70,7 @@ export default function News(props: { chefs: any }) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const baseUrl = `http://${ctx.req.headers.host}`;
     const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
-    console.log('???');
+
     return {
         props: {
             chefs,

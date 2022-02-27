@@ -17,7 +17,6 @@ dayjs.extend(weekOfYear);
 dayjs.extend(utc);
 
 dayjs.locale('ko');
-// dayjs.locale({ weekStart: 1 });
 
 const DEFAULT_DATE_STRING_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
@@ -27,6 +26,7 @@ export function now() {
     return dayjs();
 }
 
+//utc to local
 export function getDateByFormat(dateTime: ConfigType = now(), format?: string) {
     return dayjs
         .utc(dateTime)
@@ -90,7 +90,7 @@ export function getEndOfWeek(dateTime: ConfigType = now()) {
 }
 
 export function getWeekNumber(dateTiem: ConfigType = now()) {
-    return dayjs(dateTiem).week();
+    return dayjs.utc(dateTiem).week();
 }
 // export function getDateRangeOfWeek(dateTime: ConfigType = now()) {
 // 	const week = dayjs(dateTime).week();
@@ -105,6 +105,7 @@ export function getDateRangeOfWeek(weekNumber: number) {
 export function getWorkDayRangeOfWeek(weekNumber: number) {
     return _.map(_.range(5), (d, i) => {
         return dayjs()
+            .utc()
             .week(weekNumber)
             .startOf('week')
             .add(i + 1, 'd');

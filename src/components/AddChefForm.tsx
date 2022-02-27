@@ -5,7 +5,6 @@ import * as DateHelper from '../helper/DateHelper';
 
 type AddChefProps = {
     date: DateHelper.ConfigType;
-    // chefs: any[];
     weekNumber: number;
 };
 
@@ -18,7 +17,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         register,
         setValue,
         handleSubmit,
-        formState: { isSubmitting, isSubmitted, isDirty },
+        formState: { isSubmitting },
     } = useForm({});
 
     const getChefs = useCallback(async () => {
@@ -32,10 +31,9 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         setChefs(resultChefs);
     }, [weekNumber]);
 
-    // const chefs = getChefs();
     useEffect(() => {
         _.map(daysOfWeek, (day, i) => {
-            setValue(i.toString(), chefs[i]?.chef);
+            setValue(`addChef.${i}`, chefs[i]?.chef);
         });
     }, [chefs]);
 
@@ -45,14 +43,14 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
 
     const onClickAddChef = useCallback(
         async (data: any) => {
-            const { daysOfWeek } = data;
-            console.log('+++ click', data);
+            const { addChef } = data;
+            console.log('+++ click', addChef);
             await fetch('/api/chefs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     date,
-                    chefs: data,
+                    chefs: addChef,
                     weekNumber: weekNumber,
                 }),
             });
@@ -74,7 +72,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                                 id={`add-chef-${index}`}
                                 type="text"
                                 placeholder={item}
-                                {...register(`${index}`)}
+                                {...register(`addChef.${index}`)}
                             />
                         </section>
                     </div>

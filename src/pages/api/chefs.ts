@@ -8,7 +8,7 @@ import _ from 'lodash';
 // 날짜별로 지정
 const getChef = (prams: any) => {
     const { weekNumber } = prams;
-    const weekNum = DateHelper.getWeekNumber();
+    const weekNum = !weekNumber && DateHelper.getWeekNumber();
     const rangeOfWeek = DateHelper.getDateRangeOfWeek(weekNumber ?? weekNum);
     try {
         return Order.find(

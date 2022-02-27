@@ -98,8 +98,8 @@ export function getWeekNumber(dateTiem: ConfigType = now()) {
 //     const mon = dayjs().week(week).startOf('week').add(1, 'd');
 //     const fri = dayjs().week(week).startOf('week').add(5, 'd');
 export function getDateRangeOfWeek(weekNumber: number) {
-    const mon = dayjs().week(weekNumber).startOf('week').add(1, 'd');
-    const fri = dayjs().week(weekNumber).startOf('week').add(5, 'd');
+    const mon = dayjs.utc().week(weekNumber).startOf('week').add(1, 'd');
+    const fri = dayjs.utc().week(weekNumber).startOf('week').add(5, 'd');
 
     return { mon, fri };
 }

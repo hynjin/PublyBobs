@@ -32,14 +32,14 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
     }, [weekNumber]);
 
     useEffect(() => {
+        getChefs();
+    }, [weekNumber]);
+
+    useEffect(() => {
         _.map(daysOfWeek, (day, i) => {
             setValue(`addChef.${i}`, chefs[i]?.chef);
         });
     }, [chefs]);
-
-    useEffect(() => {
-        getChefs();
-    }, [weekNumber]);
 
     const onClickAddChef = useCallback(
         async (data: any) => {

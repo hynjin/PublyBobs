@@ -56,30 +56,6 @@ export default function News() {
     } = useForm();
 
     const onSubmit = (data: any) => console.log(data);
-    // const weekFormHandlers = useForm({
-    //     mode: 'onChange',
-    //     defaultValues: {
-    //         dateRange: DateHelper.getDateRangeOfWeek(weekNumber),
-    //         seletedDay: DateHelper.getDay(today),
-    //     },
-    // });
-    // const watchWeek = weekFormHandlers.watch();
-    // console.log('++++ watch', watchWeek);
-
-    const getChefs = useCallback(async () => {
-        // const query = `?weekNumber=${weekNumber}`;
-        // const result = await fetch(`http://127.0.0.1:3000/api/chefs` + query, {
-        //     method: 'GET',
-        //     headers: { 'Content-Type': 'application/json' },
-        // });
-        // const resultChefs = await result.json();
-        // setChefOfWeek(resultChefs);
-    }, [weekNumber]);
-
-    const chefs = getChefs();
-    useEffect(() => {
-        getChefs();
-    }, [weekNumber]);
 
     return (
         <div className={styles.container}>
@@ -111,23 +87,8 @@ export default function News() {
                 <Calendar />
             </div>
             <div className={styles.grid}>
-                <AddChefForm
-                    date={selectedDay}
-                    // chefs={chefOfWeek}
-                    weekNumber={weekNumber}
-                />
+                <AddChefForm date={selectedDay} weekNumber={weekNumber} />
             </div>
         </div>
     );
 }
-
-// export const getServerSideProps: GetServerSideProps = async (ctx) => {
-//     // const baseUrl = `http://${ctx.req.headers.host}`;
-//     // const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
-
-//     return {
-//         props: {
-//             chefs: [],
-//         },
-//     };
-// };

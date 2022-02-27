@@ -46,6 +46,7 @@ export default function Week(props: weekProps) {
                         <RadioGroup.Option key={index} value={day}>
                             <RadioGroup.Label as="div" className="text-center">
                                 {/*
+                                ERROR! 모두 selected 스타일로 나옴
                                 TODO:
                                 공휴일 = bg-transparent text-red-500
                                 저녁 없는 날 = 공휴일, 지정한 날짜
@@ -72,6 +73,7 @@ export default function Week(props: weekProps) {
 
     return (
         <div className="p-3 pb-4 flex">
+            {/* TODO: 이미 식단이 오픈되어 주문받는 중인 주로는 이동할 수 없음 = 이전 버튼 비활성화 (opacity 0.4) */}
             <button
                 type="button"
                 className="text-center text-gray-500"

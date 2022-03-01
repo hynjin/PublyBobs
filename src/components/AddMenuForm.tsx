@@ -23,6 +23,7 @@ export default function AddMenuForm(props: AddMenuFormProps) {
         name: `order.${index}.menu`,
         control,
     });
+
     return (
         <div key={`order-${index}`}>
             {fields.map((field, idx) => {

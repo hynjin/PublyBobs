@@ -3,10 +3,11 @@ import { Controller, Control, FieldValues } from 'react-hook-form';
 type AddRestaurantFormProps = {
     control: Control<FieldValues, any>;
     index: number;
+    orders: any;
 };
 
 export default function AddRestaurantForm(props: AddRestaurantFormProps) {
-    const { control, index } = props;
+    const { control, index, orders } = props;
 
     return (
         <>

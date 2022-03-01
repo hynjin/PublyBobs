@@ -25,10 +25,27 @@ const getOrders = (params: any) => {
     }
 };
 
-const addOrder = (restaurant: any) => {
+const addOrder = (params: any) => {
+    const { selectedDay, data } = params;
+    const order_at = DateHelper.getUTCDateByFormat(selectedDay);
+
     try {
-        console.log('+++ add restaurants post', restaurant);
-        return Restaurant.create(restaurant);
+        console.log('+++ add restaurants post', data), order_at;
+        return Order.updateOne(
+            { order_at },
+            {
+                $set: {
+                    orders: data.order,
+                },
+            },
+            {
+                upsert: true,
+                collation: {
+                    locale: 'ko',
+                    numericOrdering: true,
+                },
+            }
+        );
     } catch (e) {
         console.log('error at add rataurants');
     }

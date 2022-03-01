@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import * as DateHelper from '../helper/DateHelper';
 import AddRestaurantForm from './AddRestaurantForm';
 import AddMenuForm from './AddMenuForm';
@@ -16,6 +16,19 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
     const [todayMenu, setTodayMenu] = useState<OrderType>();
     const dayNumber = DateHelper.getDayOfWeek(selectedDay) - 1;
 
+    const handlers = useForm();
+    const {
+        control,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = handlers;
+
+    const { fields, append, remove } = useFieldArray({
+        name: `order`,
+        control,
+    });
+
     const emptyOrder = {
         restaurant: {
             name: '',
@@ -24,10 +37,11 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
         menu: [
             {
                 name: '',
-                discription: '',
+                description: '',
             },
         ],
     };
+
     const getWeekMenus = useCallback(async (weekNumber) => {
         const query = `?weekNumber=${weekNumber}`;
         const resultChefs = await fetch(`/api/edit-orders` + query, {
@@ -43,26 +57,33 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
     }, [weekNumber]);
 
     useEffect(() => {
-        console.log('+++ todayMenu ???', dayNumber, weekMenus[dayNumber]);
         setTodayMenu(weekMenus[dayNumber]);
-        append(weekMenus[dayNumber]?.orders ?? emptyOrder);
-    }, [selectedDay, dayNumber]);
+        const resetOrder = async () => {
+            await reset();
+            weekMenus[dayNumber]?.orders.length > 0
+                ? append(weekMenus[dayNumber]?.orders)
+                : append(emptyOrder);
+        };
+        resetOrder();
+    }, [selectedDay, dayNumber, weekMenus]);
 
-    const restaurantFormHandlers = useForm();
-    const {
-        control,
-        handleSubmit,
-        formState: { errors },
-    } = restaurantFormHandlers;
-
-    const { fields, append, remove } = useFieldArray({
-        name: `order`,
-        control,
-    });
-
-    const onSubmit = (data: any) => console.log('+++ data', data);
+    const onClickAddOrder = useCallback(
+        async (data: any) => {
+            console.log('+++ add order', data);
+            const { addChef } = data;
+            await fetch('/api/edit-orders', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    selectedDay,
+                    data,
+                }),
+            });
+        },
+        [selectedDay]
+    );
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <FormProvider {...handlers}>
             <div className="px-3 py-6 flex items-center">
                 <div // TODO: rolling text
                     className="flex-1 text-sm"
@@ -83,7 +104,7 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
                     <button
                         type="submit"
                         className="btn"
-                        // onClick={ 데이터 저장. 저장하지 않고 다른 이전/다음/설정/GNB메뉴 등을 누르면 저장하라는 alert을 노출 }
+                        onClick={handleSubmit(onClickAddOrder)} //{ 데이터 저장. 저장하지 않고 다른 이전/다음/설정/GNB메뉴 등을 누르면 저장하라는 alert을 노출 }
                     >
                         저장
                     </button>
@@ -97,6 +118,7 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
                                 <AddRestaurantForm
                                     control={control}
                                     index={index}
+                                    orders={todayMenu?.orders}
                                 />
                                 <AddMenuForm control={control} index={index} />
                                 <button
@@ -111,6 +133,6 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
                     );
                 })}
             </div>
-        </form>
+        </FormProvider>
     );
 }

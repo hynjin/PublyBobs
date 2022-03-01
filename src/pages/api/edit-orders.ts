@@ -27,10 +27,11 @@ const getOrders = (params: any) => {
 
 const addOrder = (params: any) => {
     const { selectedDay, data } = params;
-    const order_at = DateHelper.getUTCDateByFormat(selectedDay);
+    const order_at = DateHelper.getStartOf(selectedDay, 'day');
 
     try {
-        console.log('+++ add restaurants post', data), order_at;
+        console.log('+++ add order order_at', order_at);
+        console.log('+++ add order selectedDay', selectedDay);
         return Order.updateOne(
             { order_at },
             {

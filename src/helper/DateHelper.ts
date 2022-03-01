@@ -66,7 +66,7 @@ export function getTimestamp(dateTime: ConfigType = now()) {
 }
 
 export function getStartOf(dateTime: ConfigType = now(), unit: OpUnitType) {
-    return dayjs(dateTime).startOf(unit).utc().toISOString();
+    return dayjs.utc(dateTime).startOf(unit).utc().toISOString();
 }
 
 export function getStartOfMonth(dateTime: ConfigType = now()) {
@@ -78,7 +78,7 @@ export function getStartOfWeek(dateTime: ConfigType = now()) {
 }
 
 export function getEndOf(dateTime: ConfigType = now(), unit: OpUnitType) {
-    return dayjs(dateTime).endOf(unit).utc().toISOString();
+    return dayjs.utc(dateTime).endOf(unit).utc().toISOString();
 }
 
 export function getEndOfMonth(dateTime: ConfigType = now()) {

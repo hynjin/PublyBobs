@@ -20,7 +20,7 @@ import * as ChefAPI from '../api/Chef';
 import { UserDropdown } from '../components/UserDropdown';
 import EditMenuForm from '../components/EditMenuForm';
 import AddRestaurantForm from '../components/AddRestaurantForm';
-import AddOrderFrom from '../components/AddOrderForm';
+import AddOrderForm from '../components/AddOrderForm';
 
 export default function News(props: { chefs: any }) {
     const today = DateHelper.getDateByFormat();
@@ -62,10 +62,10 @@ export default function News(props: { chefs: any }) {
                     <h1>Bobs Editor</h1>
                     <UserDropdown />
                 </div>
-                <div className="p-3 flex justify-center">
-                    <p className="">
+                <div className="p-3 text-center">
+                    <span className="">
                         일주일 식단을 미리 등록하세요! 매주 월요일 정오에 오픈됩니다.
-                    </p>
+                    </span>
                 </div>
             </div>
             <div className="flex-1 flex flex-col divide-y">
@@ -97,7 +97,7 @@ export default function News(props: { chefs: any }) {
                             setSelectedDay={onSelectedDay}
                         />
                         {/* <EditMenuForm /> */}
-                        <AddOrderFrom
+                        <AddOrderForm
                             weekNumber={weekNumber}
                             selectedDay={selectedDay}
                         />

@@ -59,7 +59,7 @@ export default function News(props: { chefs: any }) {
                         <p>퍼블리 저녁식사 신청 시스템</p>
                         <p>퍼블리 밥스 오픈베타</p>
                     </div>
-                    <h1>Bobs Editor</h1>
+                    <h1>Publy Bobs</h1>
                     <UserDropdown />
                 </div>
                 <div className="p-3 flex justify-center">

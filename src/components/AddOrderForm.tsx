@@ -1,13 +1,6 @@
 import _ from 'lodash';
 import { useCallback, useEffect, useState } from 'react';
-import {
-    useForm,
-    useFieldArray,
-    useWatch,
-    Control,
-    Controller,
-    FormProvider,
-} from 'react-hook-form';
+import { useForm, useFieldArray } from 'react-hook-form';
 import * as DateHelper from '../helper/DateHelper';
 import AddRestaurantForm from './AddRestaurantForm';
 import AddMenuForm from './AddMenuForm';
@@ -67,11 +60,6 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
         control,
     });
 
-    // const { fields: menufields, append: menuAppend, remove:munuRemove } = useFieldArray({
-    //     name: `order.menu`,
-    //     control,
-    // });
-
     const onSubmit = (data: any) => console.log('+++ data', data);
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -102,7 +90,6 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
                 </div>
             </div>
             <div className="px-3 grid grid-cols-3 gap-6">
-                {/* <AddRestaurantForm control={control} /> */}
                 {fields.map((field, index) => {
                     return (
                         <div key={field.id}>

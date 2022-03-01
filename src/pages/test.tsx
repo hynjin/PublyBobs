@@ -1,6 +1,6 @@
 import { GetServerSideProps } from 'next';
 import type { NextPage } from 'next';
-import styles from './styles/Home.module.css';
+import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import React, { useState } from 'react';

@@ -7,7 +7,7 @@ import React, {
     useEffect,
     useLayoutEffect,
 } from 'react';
-import styles from './styles/Home.module.css';
+import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import AddChefForm from '../components/AddChefForm';

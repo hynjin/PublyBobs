@@ -3,7 +3,8 @@
 @tailwind utilities;
 
 * {
-    font-family: 'MaruBuri', 'ChosunSm', 'MS Serif', 'New York', 'Times New Roman', Times, serif;
+    font-family: MaruBuri, ChosunSm, MS Serif, New York, Times New Roman, Times,
+        serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-wrap: break-word;
@@ -12,19 +13,44 @@
 }
 
 @layer base {
-    html, body { @apply text-gray-900 }
-    h1, h2, h3, h4, h5, h6 {
+    html,
+    body {
+        @apply text-gray-900;
+    }
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
         font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
         @apply text-gray-700;
     }
-    h1 { @apply text-6xl }
-    h2 { @apply text-4xl }
-    h3 { @apply text-2xl }
-    h4 { @apply text-lg }
-    h5 { @apply text-base }
-    h6 { @apply text-sm }
-    p, span { @apply leading-normal }
-    button { @apply focus:ring-0 }
+    h1 {
+        @apply text-6xl;
+    }
+    h2 {
+        @apply text-4xl;
+    }
+    h3 {
+        @apply text-2xl;
+    }
+    h4 {
+        @apply text-lg;
+    }
+    h5 {
+        @apply text-base;
+    }
+    h6 {
+        @apply text-sm;
+    }
+    p,
+    span {
+        @apply leading-normal;
+    }
+    button {
+        @apply focus:ring-0;
+    }
     input[type='text'],
     input[type='password'],
     textarea {
@@ -49,7 +75,7 @@
     .divide-y {
         @apply divide-gray-700;
     }
-    .divide-y.divide-more{
+    .divide-y.divide-more {
         @apply divide-gray-100;
     }
     input.error {

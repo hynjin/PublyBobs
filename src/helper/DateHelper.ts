@@ -90,7 +90,6 @@ export function getEndOfWeek(dateTime: ConfigType = now()) {
 }
 
 export function getWeekNumber(dateTiem: ConfigType = now()) {
-    console.log('+++ get Weeknumber', dayjs.utc(dateTiem));
     return dayjs.utc(dateTiem).week();
 }
 // export function getDateRangeOfWeek(dateTime: ConfigType = now()) {

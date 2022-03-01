@@ -1,8 +1,8 @@
 import _ from 'lodash';
 import { Fragment, useCallback, useEffect, useState } from 'react';
-import { Combobox, Transition } from '@headlessui/react'
+import { Combobox, Transition } from '@headlessui/react';
 import { useForm } from 'react-hook-form';
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid'
+import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import * as DateHelper from '../helper/DateHelper';
 
 type AddChefProps = {
@@ -29,7 +29,6 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
             headers: { 'Content-Type': 'application/json' },
         });
         const resultChefs = await result.json();
-        console.log('+++ get chef', resultChefs, weekNumber);
         setChefs(resultChefs);
     }, [weekNumber]);
 
@@ -46,7 +45,6 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
     const onClickAddChef = useCallback(
         async (data: any) => {
             const { addChef } = data;
-            console.log('+++ click', addChef);
             await fetch('/api/chefs', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -60,13 +58,10 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         [date]
     );
 
-    const [selected, setSelected] = useState(chefs[0])
+    const [selected, setSelected] = useState(chefs[0]);
 
     return (
-        <form
-            onSubmit={handleSubmit(onClickAddChef)}
-            className="text-center"
-        >
+        <form onSubmit={handleSubmit(onClickAddChef)} className="text-center">
             {_.map(daysOfWeek, (item, index) => {
                 return (
                     // TODO: combobox로 바꾸기

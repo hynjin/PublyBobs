@@ -1,4 +1,5 @@
-import './styles/globals.css';
+import '../styles/globals.css';
+import '../foundations/styles/fonts/font.css';
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
 import { PortfolioProvider } from '../../context/context';
@@ -9,10 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <PortfolioProvider value={{ prefix }}>
                 <Head>
                     <title>퍼블리 밥스</title>
-                    <meta
-                        name="퍼블리 밥스"
-                        content="밥 먹고 일합시다!"
-                    />
+                    <meta name="퍼블리 밥스" content="밥 먹고 일합시다!" />
                     <link rel="icon" href="../../ForkAndKnife.ico" />
                 </Head>
                 <Component {...pageProps} />

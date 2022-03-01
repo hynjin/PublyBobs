@@ -7,7 +7,7 @@ import React, {
     useEffect,
     useLayoutEffect,
 } from 'react';
-import styles from './styles/Home.module.css';
+import styles from '../styles/Home.module.css';
 import Link from 'next/link';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import AddChefForm from '../components/AddChefForm';
@@ -21,12 +21,13 @@ import { UserDropdown } from '../components/UserDropdown';
 import EditMenuForm from '../components/EditMenuForm';
 
 export default function News(props: { chefs: any }) {
-    // const { chefs } = props;
     const today = DateHelper.getDateByFormat();
     const [weekNumber, setWeekNumber] = useState(DateHelper.getWeekNumber());
+
     const onChangeWeekNumber = useCallback((num: number) => {
         setWeekNumber(num);
     }, []);
+
     const [selectedDay, setSelectedDay] = useState(today);
     const onSelectedDay = useCallback((day: any) => {
         setSelectedDay(day);

@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { XIcon } from '@heroicons/react/outline';
 import SelectRestaurant from '../components/SelectRestaurant';
-import AddRestaurantForm from '../components/AddRestaurantForm';
+import AddRestaurantForm from '../components/AddRestaurant';
 import _ from 'lodash';
 import { PlusIcon } from '@heroicons/react/solid';
 

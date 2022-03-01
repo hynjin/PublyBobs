@@ -10,6 +10,7 @@ declare type MenuType = {
     name: string;
     description: string;
     restaurant_id: string;
+    orderer: [];
 };
 
 declare type DayilyMenuType = {
@@ -23,12 +24,10 @@ declare type DayilyMenuType = {
 
 declare type OrderType = {
     _id: string;
-    dayilyMenu_id: string;
-    order_id: string;
-    choose_id: string;
-    updated_at: string;
     chef: ChefType;
     date: DateType;
+    orders: { restaurant: RestaurantType; menu: MenuType[] }[];
+    order_at: string;
 };
 
 declare type ChefType = {

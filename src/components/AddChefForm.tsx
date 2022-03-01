@@ -1,8 +1,6 @@
 import _ from 'lodash';
-import { Fragment, useCallback, useEffect, useState } from 'react';
-import { Combobox, Transition } from '@headlessui/react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { CheckIcon, SelectorIcon } from '@heroicons/react/solid';
 import * as DateHelper from '../helper/DateHelper';
 
 type AddChefProps = {
@@ -24,11 +22,10 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
 
     const getChefs = useCallback(async () => {
         const query = `?weekNumber=${weekNumber}`;
-        const result = await fetch(`/api/chefs` + query, {
+        const resultChefs = await fetch(`/api/chefs` + query, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
-        });
-        const resultChefs = await result.json();
+        }).then((res) => res.json());
         setChefs(resultChefs);
     }, [weekNumber]);
 
@@ -57,8 +54,6 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         },
         [date]
     );
-
-    const [selected, setSelected] = useState(chefs[0]);
 
     return (
         <form onSubmit={handleSubmit(onClickAddChef)} className="text-center">

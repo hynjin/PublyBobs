@@ -6,8 +6,8 @@ import _ from 'lodash';
 
 // 오늘의 주문을 담당한 쉐프!
 // 날짜별로 지정
-const getChef = (prams: any) => {
-    const { weekNumber } = prams;
+const getChef = (params: any) => {
+    const { weekNumber } = params;
     const weekNum = !weekNumber && DateHelper.getWeekNumber();
     const rangeOfWeek = DateHelper.getDateRangeOfWeek(weekNumber ?? weekNum);
     try {

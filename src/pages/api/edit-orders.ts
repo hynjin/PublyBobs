@@ -6,7 +6,7 @@ import Order from '../../models/Order';
 import * as DateHelper from '../../helper/DateHelper';
 import _ from 'lodash';
 
-const getRestaurants = (params: any) => {
+const getOrders = (params: any) => {
     const { weekNumber } = params;
     const weekNum = !weekNumber && DateHelper.getWeekNumber();
     const rangeOfWeek = DateHelper.getDateRangeOfWeek(weekNumber ?? weekNum);
@@ -18,14 +18,14 @@ const getRestaurants = (params: any) => {
                     $lte: DateHelper.toDate(rangeOfWeek.fri),
                 },
             },
-            { restaurant: true, menus: true }
+            { orders: true }
         ).sort({ 'date.day_of_week': 1 });
     } catch (e) {
         console.log('error at get chef');
     }
 };
 
-const addRestaurant = (restaurant: any) => {
+const addOrder = (restaurant: any) => {
     try {
         console.log('+++ add restaurants post', restaurant);
         return Restaurant.create(restaurant);
@@ -34,7 +34,7 @@ const addRestaurant = (restaurant: any) => {
     }
 };
 
-const deleteRestaurant = (restaurant_id: any) => {
+const deleteOrder = (restaurant_id: any) => {
     try {
         console.log('+++ delete restaurants post', restaurant_id);
         return Restaurant.findOneAndDelete({
@@ -55,19 +55,19 @@ export default async function restaurantHandler(
 
     switch (method) {
         case 'GET':
-            const restaurants = await getRestaurants(query);
-            res.status(200).json(restaurants);
+            const orders = await getOrders(query);
+            res.status(200).json(orders);
             break;
         case 'POST':
-            console.log('+++ call restaurants post');
-            const result = await addRestaurant(body);
-            console.log('+++ result add restaurants post', result);
+            console.log('+++ call orders post');
+            const result = await addOrder(body);
+            console.log('+++ result add orders post', result);
             res.status(200).json(result);
             break;
         case 'DELETE':
-            const { restaurant_id } = body;
-            console.log('+++ call restaurants delete', restaurant_id);
-            await deleteRestaurant(restaurant_id);
+            const { order_id } = body;
+            console.log('+++ call orders delete', order_id);
+            await deleteOrder(order_id);
             break;
         default:
             res.setHeader('Allow', ['GET', 'POST', 'DELETE']);

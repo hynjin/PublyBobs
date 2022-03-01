@@ -165,6 +165,10 @@ export function getDay(dateTime: ConfigType = now()) {
     return dayjs(dateTime).get('date');
 }
 
+export function getDayOfWeek(dateTime: ConfigType = now()) {
+    return dayjs(dateTime).day();
+}
+
 export function isValid(dateTime?: ConfigType | null) {
     if (_.isNil(dateTime)) {
         return false;

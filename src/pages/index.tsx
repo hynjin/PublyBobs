@@ -19,6 +19,8 @@ import { useForm, useWatch, Control } from 'react-hook-form';
 import * as ChefAPI from '../api/Chef';
 import { UserDropdown } from '../components/UserDropdown';
 import EditMenuForm from '../components/EditMenuForm';
+import AddRestaurantForm from '../components/AddRestaurantForm';
+import AddOrderFrom from '../components/AddOrderForm';
 
 export default function News(props: { chefs: any }) {
     const today = DateHelper.getDateByFormat();
@@ -95,7 +97,11 @@ export default function News(props: { chefs: any }) {
                             selectedDay={selectedDay}
                             setSelectedDay={onSelectedDay}
                         />
-                        <EditMenuForm />
+                        {/* <EditMenuForm /> */}
+                        <AddOrderFrom
+                            weekNumber={weekNumber}
+                            selectedDay={selectedDay}
+                        />
                     </div>
                 </div>
             </div>

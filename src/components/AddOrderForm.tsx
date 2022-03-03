@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import * as DateHelper from '../helper/DateHelper';
 import AddRestaurantForm from './AddRestaurantForm';
@@ -42,6 +42,13 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
         ],
     };
 
+    const focusOption = useMemo(() => {
+        return {
+            shouldFocus: true,
+            focusName: `order.${fields.length}.restaurant.name`,
+        };
+    }, [fields.length]);
+
     const getWeekMenus = useCallback(async (weekNumber) => {
         const query = `?weekNumber=${weekNumber}`;
         const resultChefs = await fetch(`/api/edit-orders` + query, {
@@ -49,7 +56,6 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
             headers: { 'Content-Type': 'application/json' },
         }).then((res) => res.json());
         setWeekMenus(resultChefs);
-        console.log('+++ weekmenu', weekMenus);
     }, []);
 
     useEffect(() => {
@@ -61,15 +67,18 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
         const resetOrder = async () => {
             await reset();
             weekMenus[dayNumber]?.orders.length > 0
-                ? append(weekMenus[dayNumber]?.orders)
-                : append(emptyOrder);
+                ? append(weekMenus[dayNumber]?.orders, {
+                      shouldFocus: false,
+                  })
+                : append(emptyOrder, {
+                      shouldFocus: false,
+                  });
         };
         resetOrder();
     }, [selectedDay, dayNumber, weekMenus]);
 
     const onClickAddOrder = useCallback(
         async (data: any) => {
-            console.log('+++ add order', data);
             const { addChef } = data;
             await fetch('/api/edit-orders', {
                 method: 'POST',
@@ -97,7 +106,7 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
                     <button
                         type="button"
                         className="btn btn-ghost"
-                        onClick={() => append(emptyOrder)}
+                        onClick={() => append(emptyOrder, focusOption)}
                     >
                         식당 추가
                     </button>

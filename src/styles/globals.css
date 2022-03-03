@@ -17,44 +17,62 @@
     body {
         @apply text-gray-900;
     }
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
-        @apply text-gray-700;
-    }
     h1 {
-        @apply text-6xl;
+        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
+        @apply text-6xl text-gray-700 leading-none;
     }
     h2 {
-        @apply text-4xl;
+        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
+        @apply text-4xl text-gray-700 leading-none;
     }
     h3 {
-        @apply text-2xl;
+        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
+        @apply text-2xl text-gray-700 leading-none;
     }
     h4 {
-        @apply text-lg;
+        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
+        @apply text-lg text-gray-700 leading-none;
     }
     h5 {
-        @apply text-base;
+        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
+        @apply text-base text-gray-700 leading-none;
     }
     h6 {
-        @apply text-sm;
+        font-family: 'Fashion Stamp', 'MaruBuri', 'ChosunSm', serif;
+        @apply text-sm text-gray-700 leading-none;
     }
     p,
     span {
         @apply leading-normal;
     }
-    button {
-        @apply focus:ring-0;
+    form {
+        @apply mb-4 flex flex-col text-gray-700;
     }
-    input[type='text'],
-    input[type='password'],
+    form:focus-within {
+        @apply text-primary;
+    }
+    label {
+        @apply mb-1 text-sm font-bold;
+    }
+    input,
     textarea {
-        @apply bg-white p-3 border border-gray-700 text-sm text-gray-900 placeholder-gray-300 disabled:bg-gray-50;
+        @apply leading-normal placeholder-gray-300 caret-primary;
+    }
+    input[type="password"] {
+        font-family: 'pass', 'Roboto', Helvetica, Arial, sans-serif;
+        font-size: 18px;
+        &::-webkit-input-placeholder {
+            transform: scale(0.77);
+            transform-origin: 0 50%;
+        }
+        &::-moz-placeholder {
+            font-size: 14px;
+            opacity: 1;
+        }
+        &:-ms-input-placeholder {
+            font-size: 14px;
+            font-family: 'Roboto', Helvetica, Arial, sans-serif;
+        }
     }
     input:focus,
     textarea:focus {
@@ -62,6 +80,9 @@
     }
     input:focus[readonly] {
         @apply ring-0;
+    }
+    button {
+        @apply focus:ring-0;
     }
 }
 
@@ -78,14 +99,20 @@
     .divide-y.divide-more {
         @apply divide-gray-100;
     }
-    input.error {
+    .input {
+        @apply mb-1 border border-gray-700 p-3 text-sm text-gray-900;
+    }
+    .input:focus-within {
+        @apply border-primary;
+    }
+    .input.error {
         @apply border-red-700;
     }
     .description {
-        @apply text-xs;
+        @apply mb-1 text-gray-700 text-xs leading-normal;
     }
     .description.error {
-        @apply text-red-700 text-sm mt-1;
+        @apply text-red-700;
     }
     .btn {
         @apply py-2 px-4 bg-primary border border-primary text-sm text-white focus:ring-0;
@@ -102,8 +129,14 @@
     .btn-text {
         @apply underline;
     }
+    .triangle-up {
+        @apply w-0 h-0 text-gray-700;
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-bottom: 5px solid currentColor;
+    }
     .triangle-down {
-        @apply w-0 h-0;
+        @apply w-0 h-0 text-gray-700;
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
         border-top: 5px solid currentColor;

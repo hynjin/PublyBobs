@@ -10,7 +10,7 @@ export function UserDropdown() {
                         <p>이름</p>
                         <p>email@publy.co</p>
                     </div>
-                    <div className="triangle-down text-gray-700" />
+                    <div className="triangle-down" />
                 </div>
             </Menu.Button>
             <Transition>
@@ -19,14 +19,11 @@ export function UserDropdown() {
                         {({ active }) => (
                             <a
                                 className={`${active && 'bg-gray-50'} block p-3 text-sm`}
-                                href=""
+                                href="/editor"
                             >
-                                퍼블리 밥스 보러가기
-                                {/*
-                                TODO: 지금은 editor라서.
-                                      index에서는 '식단 등록하기'로 바뀌어야 하고,
-                                      주문자 목록에 있는 사람들(탈트)만 활성화 / 나머지는 숨김 또는 비활성화 (opacity 0.4 또는 눌렀을 때 alert)
-                                */}
+                                식단 등록하기
+                                {/* @hyunjin TODO: 주문자로 등록된 사람들에게만 보임 or 주문자로 등록되지 않은 사람들에게는 비활성화 처리  */}
+                                {/* @hyunjin TODO: index 화면에서만 보임 */}
                             </a>
                         )}
                     </Menu.Item>
@@ -34,9 +31,23 @@ export function UserDropdown() {
                         {({ active }) => (
                             <a
                                 className={`${active && 'bg-gray-50'} block p-3 text-sm`}
-                                href=""
+                                href="/"
+                            >
+                                퍼블리 밥스 보러가기
+                                {/* @hyunjin TODO: editor 화면에서만 보임 */}
+                                {/* @hyunjin TODO: editor 화면에서 저장하지 않고 누를 경우 '저장하지 않은 내용은 사라진다'는 alert 노출 */}
+                            </a>
+                        )}
+                    </Menu.Item>
+                    <Menu.Item>
+                        {({ active }) => (
+                            <a
+                                className={`${active && 'bg-gray-50'} block p-3 text-sm`}
+                                href="/login"
                             >
                                 로그아웃
+                                {/* @hyunjin TODO: 로그아웃 + login 화면으로 이동 */}
+                                {/* @hyunjin TODO: editor 화면에서 저장하지 않고 누를 경우 '저장하지 않은 내용은 사라진다'는 alert 노출 */}
                             </a>
                         )}
                     </Menu.Item>

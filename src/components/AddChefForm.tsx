@@ -17,7 +17,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         register,
         setValue,
         handleSubmit,
-        formState: { isSubmitting },
+        formState: { isSubmitting, isSubmitted },
     } = useForm({});
 
     const getChefs = useCallback(async () => {
@@ -60,11 +60,13 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
             {/* section title */}
             <div className="mb-6">
                 <div className="relative h-6 mb-1">
-                    <div className="
+                    <div
+                        className="
                         absolute -top-2 -left-4 -rotate-12
                         w-8 h-4 rounded-[32px/16px] bg-primary
                         flex justify-center items-center
-                    ">
+                    "
+                    >
                         <span className="text-[10px] text-white font-bold leading-none">
                             NOT
                         </span>
@@ -91,36 +93,22 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                 })}
             </form>
             <div className="flex justify-center gap-2">
-                {chefs.length > 0 &&
-                    <button
-                        type="button"
-                        className="btn btn-ghost"
-                    >
-                        주문자 변경
-                    </button>
-                }
-                {chefs.length === 0 &&
-                    <button
-                        type="submit"
-                        className="btn"
-                        disabled={isSubmitting}
-                    >
-                        주문자 등록
-                    </button>
-                }
+                <button
+                    type="submit"
+                    className={`btn ${chefs.length > 0 && 'btn-ghost'}`}
+                    disabled={isSubmitting}
+                >
+                    {chefs.length > 0 ? '주문자 변경' : '주문자 등록'}
+                </button>
                 {/* @hyunjin TODO: 주문자 변경 버튼을 누르면 [취소/등록] 버튼으로 바뀌도록 */}
                 <button
                     type="button"
                     className="btn btn-ghost"
                     disabled={isSubmitting}
                 >
-                    취소
+                    {'취소'}
                 </button>
-                <button
-                    type="submit"
-                    className="btn"
-                    disabled={isSubmitting}
-                >
+                <button type="submit" className="btn" disabled={isSubmitting}>
                     등록
                 </button>
             </div>

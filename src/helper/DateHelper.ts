@@ -34,6 +34,17 @@ export function getDateByFormat(dateTime: ConfigType = now(), format?: string) {
         .format(format ?? DEFAULT_DATE_STRING_FORMAT);
 }
 
+export function getDateByFormatEn(
+    dateTime: ConfigType = now(),
+    format?: string
+) {
+    return dayjs
+        .utc(dateTime)
+        .local()
+        .locale('en')
+        .format(format ?? DEFAULT_DATE_STRING_FORMAT);
+}
+
 export function getUTCDateByFormat(
     dateTime: ConfigType = now(),
     format?: string

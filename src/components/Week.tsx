@@ -11,7 +11,10 @@ import * as DateHelper from '../helper/DateHelper';
 import _ from 'lodash';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { RadioGroup } from '@headlessui/react';
-import { ArrowNarrowLeftIcon, ArrowNarrowRightIcon } from '@heroicons/react/outline';
+import {
+    ArrowNarrowLeftIcon,
+    ArrowNarrowRightIcon,
+} from '@heroicons/react/outline';
 
 type weekProps = {
     menus: any;
@@ -34,7 +37,8 @@ export default function Week(props: weekProps) {
         return DateHelper.getWorkDayRangeOfWeek(weekNumber);
     }, [weekNumber]);
 
-    const DayButton = () => {
+    const DayButton = useCallback(() => {
+        console.log('+++', selectedDay);
         return (
             <RadioGroup
                 value={selectedDay}
@@ -42,25 +46,35 @@ export default function Week(props: weekProps) {
                 className="flex-1 flex gap-8 justify-center"
             >
                 {_.map(wholeDay, (day, index) => {
+                    const isSameDay = DateHelper.isSameDay(day, selectedDay);
                     return (
                         <RadioGroup.Option key={index} value={day}>
                             <RadioGroup.Label as="div" className="text-center">
                                 {/*
-                                ERROR! 모두 selected 스타일로 나옴
                                 TODO:
                                 공휴일 = bg-transparent text-red-500
                                 저녁 없는 날 = 공휴일, 지정한 날짜
                                             opacity 0.4 + 클릭 X (비활성화)
                                 */}
-                                <p className={`
+                                <p
+                                    className={`
                                     mb-1 rounded-full w-10 h-10 flex justify-center items-center text-lg
-                                    ${selectedDay ? 'bg-primary text-white font-bold' : 'bg-transparent text-gray-500 hover:bg-primary/10'}
-                                `}>
-                                    {DateHelper.getDay(
-                                        wholeDay[index]
-                                    )}
+                                    ${
+                                        isSameDay
+                                            ? 'bg-primary text-white font-bold'
+                                            : 'bg-transparent text-gray-500 hover:bg-primary/10'
+                                    }
+                                `}
+                                >
+                                    {DateHelper.getDay(wholeDay[index])}
                                 </p>
-                                <p className={`text-xs ${selectedDay ? 'text-primary' : 'text-gray-500'}`}>
+                                <p
+                                    className={`text-xs ${
+                                        isSameDay
+                                            ? 'text-primary'
+                                            : 'text-gray-500'
+                                    }`}
+                                >
                                     {dayOfWeek[index]}
                                 </p>
                             </RadioGroup.Label>
@@ -69,7 +83,7 @@ export default function Week(props: weekProps) {
                 })}
             </RadioGroup>
         );
-    };
+    }, [selectedDay, wholeDay]);
 
     return (
         <div className="p-3 pb-4 flex">
@@ -82,7 +96,10 @@ export default function Week(props: weekProps) {
                     setSelectedDay(DateHelper.addDay(selectedDay, -7));
                 }}
             >
-                <ArrowNarrowLeftIcon className="m-2 w-6 h-6" aria-hidden="true" />
+                <ArrowNarrowLeftIcon
+                    className="m-2 w-6 h-6"
+                    aria-hidden="true"
+                />
                 <span className="text-xs">이전</span>
             </button>
             {DayButton()}
@@ -94,7 +111,10 @@ export default function Week(props: weekProps) {
                     setSelectedDay(DateHelper.addDay(selectedDay, +7));
                 }}
             >
-                <ArrowNarrowRightIcon className="m-2 w-6 h-6" aria-hidden="true" />
+                <ArrowNarrowRightIcon
+                    className="m-2 w-6 h-6"
+                    aria-hidden="true"
+                />
                 <span className="text-xs">다음</span>
             </button>
         </div>

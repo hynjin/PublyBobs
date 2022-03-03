@@ -1,5 +1,4 @@
 import { GetServerSideProps } from 'next';
-import type { NextPage } from 'next';
 import React, {
     useState,
     useCallback,
@@ -9,31 +8,35 @@ import React, {
 } from 'react';
 import styles from '../styles/Home.module.css';
 import Link from 'next/link';
-import type { NextApiRequest, NextApiResponse } from 'next';
 import AddChefForm from '../components/AddChefForm';
 import * as DateHelper from '../helper/DateHelper';
-import Calendar from '../components/Calendar';
 import Week from '../components/Week';
-import { ConnectionClosedEvent } from 'mongodb';
 import { useForm, useWatch, Control } from 'react-hook-form';
-import * as ChefAPI from '../api/Chef';
 import { UserDropdown } from '../components/UserDropdown';
-import EditMenuForm from '../components/EditMenuForm';
-import AddRestaurantForm from '../components/AddRestaurantForm';
 import AddOrderForm from '../components/AddOrderForm';
 
 export default function News(props: { chefs: any }) {
-    const today = DateHelper.getDateByFormat();
     const [weekNumber, setWeekNumber] = useState(DateHelper.getWeekNumber());
-
     const onChangeWeekNumber = useCallback((num: number) => {
         setWeekNumber(num);
     }, []);
 
-    const [selectedDay, setSelectedDay] = useState(today);
+    const [selectedDay, setSelectedDay] = useState('');
     const onSelectedDay = useCallback((day: any) => {
         setSelectedDay(day);
     }, []);
+    useEffect(() => {
+        setSelectedDay(DateHelper.getDateByFormat());
+    }, []);
+
+    const [year, setYear] = useState(DateHelper.getYear(selectedDay));
+    const [month, setMonth] = useState(
+        DateHelper.getDateByFormatEn(selectedDay, 'MMM')
+    );
+    useEffect(() => {
+        setYear(DateHelper.getYear(selectedDay));
+        setMonth(DateHelper.getDateByFormatEn(selectedDay, 'MMM'));
+    }, [selectedDay]);
 
     const {
         register,
@@ -64,13 +67,16 @@ export default function News(props: { chefs: any }) {
                 </div>
                 <div className="p-3 text-center">
                     <span className="">
-                        일주일 식단을 미리 등록하세요! 매주 월요일 정오에 오픈됩니다.
+                        일주일 식단을 미리 등록하세요! 매주 월요일 정오에
+                        오픈됩니다.
                     </span>
                 </div>
             </div>
             <div className="flex-1 flex flex-col divide-y">
                 <div className="p-3 flex justify-between items-center">
-                    <h2 className="p-3">Jan, 2022</h2>
+                    <h2 className="p-3">
+                        {month}, {year}
+                    </h2>
                     <div className="p-3 flex">
                         <button
                             type="button"

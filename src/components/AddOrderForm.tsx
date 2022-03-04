@@ -44,8 +44,7 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
 
     const focusOption = useMemo(() => {
         return {
-            shouldFocus: true,
-            focusName: `order.${fields.length}.restaurant.name`,
+            shouldFocus: false,
         };
     }, [fields.length]);
 
@@ -56,6 +55,12 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
             headers: { 'Content-Type': 'application/json' },
         }).then((res) => res.json());
         setWeekMenus(resultChefs);
+
+        const result = await fetch(`/api/edit-orders` + query, {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        }).then((res) => res.json());
+        console.log('+++ rest', result);
     }, []);
 
     useEffect(() => {
@@ -67,30 +72,33 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
         const resetOrder = async () => {
             await reset();
             weekMenus[dayNumber]?.orders.length > 0
-                ? append(weekMenus[dayNumber]?.orders, {
-                      shouldFocus: false,
-                  })
-                : append(emptyOrder, {
-                      shouldFocus: false,
-                  });
+                ? append(weekMenus[dayNumber]?.orders, focusOption)
+                : append(emptyOrder, focusOption);
         };
         resetOrder();
-    }, [selectedDay, dayNumber, weekMenus]);
+    }, [selectedDay, dayNumber, weekMenus, focusOption]);
 
     const onClickAddOrder = useCallback(
         async (data: any) => {
-            const { addChef } = data;
             await fetch('/api/edit-orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     selectedDay,
-                    data,
+                    order: data.order,
+                }),
+            });
+            await fetch('/api/restaurants', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    order: data.order,
                 }),
             });
         },
         [selectedDay]
     );
+
     return (
         <FormProvider {...handlers}>
             <div className="px-3 py-6 flex items-center">

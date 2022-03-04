@@ -2,7 +2,10 @@ declare type RestaurantType = {
     _id: string;
     name: string;
     url: string;
-    description: string;
+    menus: {
+        name: string;
+        description: string;
+    }[];
 };
 
 declare type MenuType = {

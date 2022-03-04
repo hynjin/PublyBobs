@@ -7,28 +7,45 @@ import * as DateHelper from '../../helper/DateHelper';
 import _ from 'lodash';
 
 const getRestaurants = (params: any) => {
-    const { weekNumber } = params;
-    const weekNum = !weekNumber && DateHelper.getWeekNumber();
-    const rangeOfWeek = DateHelper.getDateRangeOfWeek(weekNumber ?? weekNum);
+    const { name } = params;
     try {
-        return Order.find(
+        return Restaurant.find(
             {
-                order_at: {
-                    $gte: DateHelper.toDate(rangeOfWeek.mon),
-                    $lte: DateHelper.toDate(rangeOfWeek.fri),
-                },
+                name: { $regex: name },
             },
-            { restaurant: true, menus: true }
-        ).sort({ 'date.day_of_week': 1 });
+            { name: true, url: true, menus: true }
+        );
     } catch (e) {
         console.log('error at get chef');
     }
 };
 
-const addRestaurant = (restaurant: any) => {
+const addRestaurant = (params: any) => {
+    const { order } = params;
     try {
-        console.log('+++ add restaurants post', restaurant);
-        return Restaurant.create(restaurant);
+        _.map(order, async (o) => {
+            console.log('+++ add restaurants post from order', o);
+            console.log(
+                '+++ add restaurants post from order',
+                _.flatten(o.menu)
+            );
+            return Restaurant.findOneAndUpdate(
+                {
+                    name: o.restaurant.name,
+                },
+                {
+                    $set: {
+                        url: o.restaurant.url,
+                    },
+                    $addToSet: {
+                        menus: { $each: o.menu },
+                    },
+                },
+                {
+                    upsert: true,
+                }
+            );
+        });
     } catch (e) {
         console.log('error at add rataurants');
     }

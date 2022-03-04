@@ -26,7 +26,7 @@ const getOrders = (params: any) => {
 };
 
 const addOrder = (params: any) => {
-    const { selectedDay, order } = params;
+    const { selectedDay, data } = params;
     const order_at = DateHelper.getStartOf(selectedDay, 'day');
 
     try {
@@ -36,7 +36,7 @@ const addOrder = (params: any) => {
             { order_at },
             {
                 $set: {
-                    order,
+                    orders: data.order,
                 },
             },
             {

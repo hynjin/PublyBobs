@@ -38,6 +38,7 @@ export default function Week(props: weekProps) {
     }, [weekNumber]);
 
     const DayButton = useCallback(() => {
+        console.log('+++', selectedDay);
         return (
             <RadioGroup
                 value={selectedDay}

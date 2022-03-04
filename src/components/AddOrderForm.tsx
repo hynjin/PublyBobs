@@ -55,12 +55,6 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
             headers: { 'Content-Type': 'application/json' },
         }).then((res) => res.json());
         setWeekMenus(resultChefs);
-
-        const result = await fetch(`/api/edit-orders` + query, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        }).then((res) => res.json());
-        console.log('+++ rest', result);
     }, []);
 
     useEffect(() => {

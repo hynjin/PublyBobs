@@ -47,6 +47,7 @@ export default function AddMenuForm(props: AddMenuFormProps) {
                                 className="btn"
                                 onClick={() => {
                                     remove(idx);
+                                    console.log('+++ remvo', idx);
                                 }}
                             >
                                 메뉴 삭제

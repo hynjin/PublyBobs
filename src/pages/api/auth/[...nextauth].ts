@@ -15,10 +15,7 @@ export default NextAuth({
             clientSecret: process.env.GOOGLE_SECRET || '',
         }),
     ],
-
-    database: process.env.MONGODB_URI,
     adapter: MongoDBAdapter(clientPromise),
-
     pages: {
         signIn: '/login',
         error: '/login',
@@ -27,10 +24,7 @@ export default NextAuth({
     callbacks: {
         async signIn({ account, profile }) {
             if (account.provider === 'google') {
-                return (
-                    profile.email_verified! &&
-                    profile.email?.endsWith('@publy.co')
-                );
+                return !!profile.email?.endsWith('@publy.co');
             }
             return true;
         },

@@ -21,6 +21,8 @@ import { UserDropdown } from '../components/UserDropdown';
 import EditMenuForm from '../components/EditMenuForm';
 import AddRestaurantForm from '../components/AddRestaurantForm';
 import AddOrderFrom from '../components/AddOrderForm';
+import { getSession, signIn, signOut, useSession } from 'next-auth/react';
+import _ from 'lodash';
 
 export default function News(props: { chefs: any }) {
     const today = DateHelper.getDateByFormat();
@@ -64,7 +66,8 @@ export default function News(props: { chefs: any }) {
                 </div>
                 <div className="p-3 flex justify-center">
                     <p className="">
-                        일주일 식단을 미리 등록하세요! 매주 월요일 정오에 오픈됩니다.
+                        일주일 식단을 미리 등록하세요! 매주 월요일 정오에
+                        오픈됩니다.
                     </p>
                 </div>
             </div>
@@ -75,16 +78,20 @@ export default function News(props: { chefs: any }) {
                             {/* section title */}
                             <div className="mb-6">
                                 <div className="relative h-6 mb-1">
-                                    <div className="
+                                    <div
+                                        className="
                                         absolute -top-2 -left-4 -rotate-12
                                         w-8 h-4 rounded-[32px/16px] bg-primary
                                         flex justify-center items-center
-                                    ">
+                                    "
+                                    >
                                         <span className="text-[10px] text-white font-bold leading-none">
                                             NOT
                                         </span>
                                     </div>
-                                    <h3 className="absolute">Chefs of The Week</h3>
+                                    <h3 className="absolute">
+                                        Chefs of The Week
+                                    </h3>
                                 </div>
                                 <p className="text-xs text-gray-700">
                                     천하제일 요리사(※아님) 탈트가 주문합니다!
@@ -135,10 +142,8 @@ export default function News(props: { chefs: any }) {
                             </div>
                         </div>
                     </div>
-                    <div className="pl-3 w-2/4 divide-y divide-more">
-                    </div>
-                    <div className="pl-3 w-1/4">
-                    </div>
+                    <div className="pl-3 w-2/4 divide-y divide-more"></div>
+                    <div className="pl-3 w-1/4"></div>
                 </div>
             </div>
         </div>
@@ -146,12 +151,20 @@ export default function News(props: { chefs: any }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const baseUrl = `http://${ctx.req.headers.host}`;
-    const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
+    const session = await getSession(ctx);
+
+    if (_.isNil(session)) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        };
+    }
+    // const baseUrl = `http://${ctx.req.headers.host}`;
+    // const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
 
     return {
-        props: {
-            chefs,
-        },
+        props: {},
     };
 };

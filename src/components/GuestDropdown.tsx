@@ -1,9 +1,11 @@
 import { Menu, Transition } from '@headlessui/react';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 export function GuestDropdown() {
     const { data: session } = useSession();
+    const router = useRouter();
 
     return (
         <Menu as="div" className="w-44 relative text-left">
@@ -29,7 +31,7 @@ export function GuestDropdown() {
                                     active && 'bg-gray-50'
                                 } block p-3 text-sm`}
                                 onClick={() =>
-                                    session ? signOut() : signIn('google')
+                                    session ? signOut() : router.push('/login')
                                 }
                             >
                                 {session ? '로그아웃' : '로그인'}

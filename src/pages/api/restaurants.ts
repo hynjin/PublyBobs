@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { ObjectId } from 'mongodb';
-import connectToDatabase from '../../libraries/mongoose';
+import connectToDatabase from '../../util/mongoose';
 import Restaurant from '../../models/Restaurant';
 import Order from '../../models/Order';
 import * as DateHelper from '../../helper/DateHelper';

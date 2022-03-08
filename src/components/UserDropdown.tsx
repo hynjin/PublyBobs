@@ -1,7 +1,12 @@
-import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Menu, Transition } from '@headlessui/react';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import { useRouter } from 'next/router';
 
 export function UserDropdown() {
+    const { data: session } = useSession();
+    const router = useRouter();
+
     return (
         <Menu as="div" className="w-44 relative text-left">
             <Menu.Button>
@@ -18,7 +23,9 @@ export function UserDropdown() {
                     <Menu.Item>
                         {({ active }) => (
                             <a
-                                className={`${active && 'bg-gray-50'} block p-3 text-sm`}
+                                className={`${
+                                    active && 'bg-gray-50'
+                                } block p-3 text-sm`}
                                 href="/editor"
                             >
                                 식단 등록하기
@@ -30,7 +37,9 @@ export function UserDropdown() {
                     <Menu.Item>
                         {({ active }) => (
                             <a
-                                className={`${active && 'bg-gray-50'} block p-3 text-sm`}
+                                className={`${
+                                    active && 'bg-gray-50'
+                                } block p-3 text-sm`}
                                 href="/"
                             >
                                 퍼블리 밥스 보러가기
@@ -41,18 +50,22 @@ export function UserDropdown() {
                     </Menu.Item>
                     <Menu.Item>
                         {({ active }) => (
-                            <a
-                                className={`${active && 'bg-gray-50'} block p-3 text-sm`}
-                                href="/login"
+                            <button
+                                className={`${
+                                    active && 'bg-gray-50'
+                                } block p-3 text-sm`}
+                                onClick={() =>
+                                    session ? signOut() : router.push('/login')
+                                }
                             >
-                                로그아웃
+                                {session ? '로그아웃' : '로그인'}
                                 {/* @hyunjin TODO: 로그아웃 + login 화면으로 이동 */}
                                 {/* @hyunjin TODO: editor 화면에서 저장하지 않고 누를 경우 '저장하지 않은 내용은 사라진다'는 alert 노출 */}
-                            </a>
+                            </button>
                         )}
                     </Menu.Item>
                 </Menu.Items>
             </Transition>
         </Menu>
-    )
+    );
 }

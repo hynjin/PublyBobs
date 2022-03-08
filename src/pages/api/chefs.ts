@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import connectToDatabase from '../../libraries/mongoose';
+import connectToDatabase from '../../util/mongoose';
 import Order from '../../models/Order';
 import * as DateHelper from '../../helper/DateHelper';
 import _ from 'lodash';

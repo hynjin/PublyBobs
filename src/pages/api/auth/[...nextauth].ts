@@ -1,5 +1,6 @@
 import NextAuth, { NextAuthOptions, User } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import CognitoProvider from 'next-auth/providers/cognito';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { MongoDBAdapter } from '@next-auth/mongodb-adapter';
 import clientPromise from '../../../util/mognodb';
@@ -13,6 +14,11 @@ export default NextAuth({
         GoogleProvider({
             clientId: process.env.GOOGLE_ID || '',
             clientSecret: process.env.GOOGLE_SECRET || '',
+        }),
+        CognitoProvider({
+            clientId: process.env.COGNITO_CLIENT_ID || '',
+            clientSecret: process.env.COGNITO_CLIENT_SECRET || '',
+            issuer: process.env.COGNITO_ISSUER,
         }),
     ],
     adapter: MongoDBAdapter(clientPromise),

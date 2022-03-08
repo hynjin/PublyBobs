@@ -1,13 +1,20 @@
-import { Menu, Transition } from '@headlessui/react'
-import { Fragment, useEffect, useRef, useState } from 'react'
+import { Menu, Transition } from '@headlessui/react';
+import { Fragment, useEffect, useRef, useState } from 'react';
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export function GuestDropdown() {
+    const { data: session } = useSession();
+
     return (
         <Menu as="div" className="w-44 relative text-left">
             <Menu.Button>
                 <div className="w-44 p-3 flex items-center border text-xs">
                     <div className="flex-1 text-left">
-                        <p>퍼블리 팀원이라면,<br/>저녁 먹고 일하세요!</p>
+                        <p>
+                            퍼블리 팀원이라면,
+                            <br />
+                            저녁 먹고 일하세요!
+                        </p>
                     </div>
                     <div className="triangle-down" />
                 </div>
@@ -17,18 +24,24 @@ export function GuestDropdown() {
                 <Menu.Items className="absolute right-0 mt-2 origin-top-right w-44 bg-white border overflow-hidden">
                     <Menu.Item>
                         {({ active }) => (
-                            <a
-                                className={`${active && 'bg-gray-50'} block p-3 text-sm`}
-                                href="/login"
+                            <button
+                                className={`${
+                                    active && 'bg-gray-50'
+                                } block p-3 text-sm`}
+                                onClick={() =>
+                                    session ? signOut() : signIn('google')
+                                }
                             >
-                                로그인
-                            </a>
+                                {session ? '로그아웃' : '로그인'}
+                            </button>
                         )}
                     </Menu.Item>
                     <Menu.Item>
                         {({ active }) => (
                             <a
-                                className={`${active && 'bg-gray-50'} block p-3 text-sm`}
+                                className={`${
+                                    active && 'bg-gray-50'
+                                } block p-3 text-sm`}
                                 href="/join"
                             >
                                 회원가입
@@ -38,5 +51,5 @@ export function GuestDropdown() {
                 </Menu.Items>
             </Transition>
         </Menu>
-    )
+    );
 }

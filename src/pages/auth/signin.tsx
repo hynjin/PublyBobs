@@ -7,51 +7,13 @@ import React, {
     useEffect,
     useLayoutEffect,
 } from 'react';
-import styles from '../styles/Home.module.css';
+import styles from '../../styles/Home.module.css';
 import Link from 'next/link';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import AddChefForm from '../components/AddChefForm';
-import * as DateHelper from '../helper/DateHelper';
-import Calendar from '../components/Calendar';
-import Week from '../components/Week';
-import { ConnectionClosedEvent } from 'mongodb';
-import { useForm, useWatch, Control } from 'react-hook-form';
-import * as ChefAPI from '../api/Chef';
-import { UserDropdown } from '../components/UserDropdown';
-import EditMenuForm from '../components/EditMenuForm';
-import AddRestaurantForm from '../components/AddRestaurantForm';
-import AddOrderFrom from '../components/AddOrderForm';
-import { GuestDropdown } from '../components/GuestDropdown';
-// import { useSession, signIn, signOut } from 'next-auth/react';
-import { getProviders, signIn } from 'next-auth/react';
+import { GuestDropdown } from '../../components/GuestDropdown';
+import { signIn } from 'next-auth/react';
 
-export default function News(props: { chefs: any }) {
-    // const { data: session } = useSession();
-
-    // const googleClientId = process.env.GOOGLE_CLIENT;
-
-    // const [userObj, setUserObj] = React.useState({
-    //     email: '',
-    //     name: '',
-    // });
-    // const onLoginSuccess = (res: any) => {
-    //     setUserObj({
-    //         ...userObj,
-    //         email: res.profileObj.email,
-    //         name: res.profileObj.name,
-    //     });
-    // };
-    // const Login = (props: any) => {
-    //     //클라이언트 ID (환경변수)
-    //     //사용자 정보를 담아둘 userObj
-    //     //로그인 성공시 res처리
-
-    //     return (
-    //         <div>
-    //         </div>
-    //     );
-    // };
-
+export default function SignIn() {
     return (
         <div
             className={
@@ -86,7 +48,9 @@ export default function News(props: { chefs: any }) {
                 </div>
             </div>
             <div className="py-[80px] flex-1 flex flex-col items-center">
-                <button onClick={() => signIn()}>Sign in</button>
+                <button onClick={() => signIn('google')}>
+                    Sign in with google
+                </button>
 
                 <div className="w-full max-w-xs">
                     <form>
@@ -129,9 +93,3 @@ export default function News(props: { chefs: any }) {
         </div>
     );
 }
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const providers = await getProviders();
-    return {
-        props: { providers },
-    };
-};

@@ -14,8 +14,10 @@ import Week from '../components/Week';
 import { useForm, useWatch, Control } from 'react-hook-form';
 import { UserDropdown } from '../components/UserDropdown';
 import AddOrderForm from '../components/AddOrderForm';
+import { getSession } from 'next-auth/react';
+import _ from 'lodash';
 
-export default function News(props: { chefs: any }) {
+export default function Editor() {
     const [weekNumber, setWeekNumber] = useState(DateHelper.getWeekNumber());
     const onChangeWeekNumber = useCallback((num: number) => {
         setWeekNumber(num);
@@ -102,7 +104,6 @@ export default function News(props: { chefs: any }) {
                             selectedDay={selectedDay}
                             setSelectedDay={onSelectedDay}
                         />
-                        {/* <EditMenuForm /> */}
                         <AddOrderForm
                             weekNumber={weekNumber}
                             selectedDay={selectedDay}
@@ -115,12 +116,20 @@ export default function News(props: { chefs: any }) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
-    const baseUrl = `http://${ctx.req.headers.host}`;
-    const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
+    const session = await getSession(ctx);
+
+    if (!session) {
+        return {
+            redirect: {
+                destination: '/login',
+                permanent: false,
+            },
+        };
+    }
+    // const baseUrl = `http://${ctx.req.headers.host}`;
+    // const chefs = await fetch(baseUrl + '/api/chefs').then((res) => res.json());
 
     return {
-        props: {
-            chefs,
-        },
+        props: {},
     };
 };

@@ -153,7 +153,7 @@ export default function News(props: { chefs: any }) {
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
     const session = await getSession(ctx);
 
-    if (_.isNil(session)) {
+    if (!session) {
         return {
             redirect: {
                 destination: '/login',

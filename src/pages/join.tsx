@@ -21,7 +21,7 @@ import { UserDropdown } from '../components/UserDropdown';
 import EditMenuForm from '../components/EditMenuForm';
 import AddRestaurantForm from '../components/AddRestaurantForm';
 import AddOrderFrom from '../components/AddOrderForm';
-import { GuestDropdown } from 'components/GuestDropdown';
+import { GuestDropdown } from '../components/GuestDropdown';
 
 export default function News(props: { chefs: any }) {
     const today = DateHelper.getDateByFormat();
@@ -57,15 +57,17 @@ export default function News(props: { chefs: any }) {
             <div className="divide-y">
                 <div className="px-6 py-8 flex justify-between items-center">
                     <div className="w-44 p-3 border text-xs">
-                        <p>퍼블리 저녁식사 신청 시스템<br/>퍼블리 밥스 오픈베타</p>
+                        <p>
+                            퍼블리 저녁식사 신청 시스템
+                            <br />
+                            퍼블리 밥스 오픈베타
+                        </p>
                     </div>
                     <h1>Publy Bobs</h1>
                     <GuestDropdown />
                 </div>
                 <div className="p-3 text-center">
-                    <span>
-                        저녁 걱정 덜어주기 제도를 더 알고 싶다면?
-                    </span>
+                    <span>저녁 걱정 덜어주기 제도를 더 알고 싶다면?</span>
                     <a
                         className="pl-2 text-primary underline"
                         target="_blank"
@@ -130,10 +132,7 @@ export default function News(props: { chefs: any }) {
                         </p>
                     </form>
                 </div>
-                <button
-                    type="submit"
-                    className="mx-auto btn"
-                >
+                <button type="submit" className="mx-auto btn">
                     회원가입
                 </button>
             </div>

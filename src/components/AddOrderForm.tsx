@@ -14,7 +14,7 @@ export default function AddOrderForm(props: AddOrderProps): JSX.Element {
     const { selectedDay, weekNumber } = props;
     const [weekMenus, setWeekMenus] = useState<_.Dictionary<OrderType>>({});
     const [todayMenu, setTodayMenu] = useState<OrderType>();
-    const dayNumber = DateHelper.getDayOfWeek(selectedDay) - 1;
+    const dayNumber = DateHelper.getDayOfWeek(selectedDay);
 
     const handlers = useForm();
     const {

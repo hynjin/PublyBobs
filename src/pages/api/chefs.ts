@@ -35,8 +35,8 @@ const addChef = (prams: any) => {
             const order_at = DateHelper.addDay(mon, _.toNumber(index));
 
             const date = {
-                day_of_week: _.toNumber(index),
-                weekNumber: weekNumber,
+                day_of_week: DateHelper.getDayOfWeek(order_at),
+                weekNumber: DateHelper.getWeekNumber(order_at),
                 year: DateHelper.getYear(order_at),
                 month: DateHelper.getMonth(order_at),
                 day: DateHelper.getDay(order_at),

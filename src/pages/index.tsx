@@ -20,7 +20,7 @@ import * as ChefAPI from '../api/Chef';
 import { UserDropdown } from '../components/UserDropdown';
 import EditMenuForm from '../components/EditMenuForm';
 import AddRestaurantForm from '../components/AddRestaurantForm';
-import AddOrderFrom from '../components/AddOrderForm';
+import OrderForm from '../components/OrderForm';
 import { getSession, signIn, signOut, useSession } from 'next-auth/react';
 import _ from 'lodash';
 
@@ -143,6 +143,10 @@ export default function News(props: { chefs: any }) {
                         </div>
                     </div>
                     <div className="pl-3 w-2/4 divide-y divide-more"></div>
+                    <OrderForm
+                        weekNumber={weekNumber}
+                        selectedDay={selectedDay}
+                    />
                     <div className="pl-3 w-1/4"></div>
                 </div>
             </div>

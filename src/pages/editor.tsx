@@ -14,6 +14,7 @@ import Week from '../components/Week';
 import { useForm, useWatch, Control } from 'react-hook-form';
 import { UserDropdown } from '../components/UserDropdown';
 import AddOrderForm from '../components/AddOrderForm';
+import OrderForm from '../components/OrderForm';
 import { getSession } from 'next-auth/react';
 import _ from 'lodash';
 

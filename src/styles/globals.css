@@ -133,13 +133,13 @@
         @apply w-0 h-0 text-gray-700;
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
-        border-bottom: 5px solid currentColor;
+        border-bottom: 4px solid currentColor;
     }
     .triangle-down {
         @apply w-0 h-0 text-gray-700;
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
-        border-top: 5px solid currentColor;
+        border-top: 4px solid currentColor;
     }
 }
 

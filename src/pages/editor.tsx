@@ -56,7 +56,7 @@ export default function Editor() {
                 flex
                 flex-col
                 divide-y
-                divide-double` // ERROR! double 스타일 적용
+                divide-double` // TODO: double 스타일 적용
             }
         >
             <div className="divide-y">
@@ -70,8 +70,7 @@ export default function Editor() {
                 </div>
                 <div className="p-3 text-center">
                     <span className="">
-                        일주일 식단을 미리 등록하세요! 매주 월요일 정오에
-                        오픈됩니다.
+                        일주일 식단을 미리 등록하세요! 매주 월요일 정오에 오픈됩니다.
                     </span>
                 </div>
             </div>
@@ -91,13 +90,13 @@ export default function Editor() {
                     </div>
                 </div>
                 <div className="flex-1 p-3 pl-0 flex gap-3 divide-x">
-                    <div className="pl-3 w-1/4">
+                    <div className="pl-3 basis-1/4">
                         <AddChefForm
                             date={selectedDay}
                             weekNumber={weekNumber}
                         />
                     </div>
-                    <div className="pl-3 w-3/4 divide-y divide-more">
+                    <div className="pl-3 basis-3/4 divide-y divide-more">
                         <Week
                             menus={[]}
                             weekNumber={weekNumber}

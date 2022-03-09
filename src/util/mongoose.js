@@ -23,8 +23,9 @@ if (!MONGODB_DB) {
 }
 
 export async function connectToDatabase() {
-    if (cachedDb.conn) {
-        return cachedDb.conn;
+    if (cachedDb && cachedDb.serverConfig?.isConnected()) {
+        console.log('=> using cached database instance');
+        return Promise.resolve(cachedDb);
     }
 
     if (!cachedDb.promise) {

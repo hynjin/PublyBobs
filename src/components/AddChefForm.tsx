@@ -80,11 +80,11 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
             <div key={index}>
                 <Listbox value={value} onChange={onChange}>
                     <div className="relative">
-                        <div className="relative input mb-2 cursor-default focus:outline-none overflow-hidden">
-                            <Listbox.Button className="absolute inset-y-0 right-0 flex items-center pr-3">
-                                <span className="block truncate">
-                                    {value?.name ?? dayName}
-                                </span>
+                        <div className="relative input mb-2 cursor-default overflow-hidden">
+                            <span className="block truncate">
+                                {value?.name ?? dayName}
+                            </span>
+                            <Listbox.Button className="absolute inset-0 flex items-center justify-end pr-3 focus:outline-none">
                                 <div className="flex flex-col gap-1">
                                     <div className="triangle-up" />
                                     <div className="triangle-down" />
@@ -97,15 +97,14 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                         >
-                            <Listbox.Options className="absolute w-full border overflow-auto bg-white max-h-56 text-sm">
+                            <Listbox.Options className="absolute w-full border overflow-auto bg-white max-h-56 text-sm z-10 focus:outline-none">
                                 {_.map(chefLists, (chef, idx) => (
                                     <div key={`${index}-${idx}-${chef.userId}`}>
+                                        {/* TODO: selected 스타일이 적용되지 않는 문제 */}
                                         <Listbox.Option
                                             key={chef._id}
                                             className={({ selected, active }) =>
-                                                `cursor-default select-none p-3 ${
-                                                    active && 'bg-gray-50'
-                                                } ${selected && 'bg-secondary'}`
+                                                `cursor-default select-none p-3 text-gray-900 ${selected && 'bg-primary/10'} ${active && 'bg-gray-50'}`
                                             }
                                             value={chef}
                                         >

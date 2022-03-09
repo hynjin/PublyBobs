@@ -48,9 +48,6 @@
     form {
         @apply mb-4 flex flex-col text-gray-700;
     }
-    form:focus-within {
-        @apply text-primary;
-    }
     label {
         @apply mb-1 text-sm font-bold;
     }
@@ -81,6 +78,9 @@
     input:focus[readonly] {
         @apply ring-0;
     }
+    input:disabled {
+        @apply bg-gray-50;
+    }
     button {
         @apply focus:ring-0;
     }
@@ -96,11 +96,11 @@
     .divide-y {
         @apply divide-gray-700;
     }
-    .divide-y.divide-more {
-        @apply divide-gray-100;
+    .divide-more{
+        @apply divide-gray-200;
     }
     .input {
-        @apply mb-1 border border-gray-700 p-3 text-sm text-gray-900;
+        @apply mb-2 border border-gray-700 p-3 text-sm text-gray-900;
     }
     .input:focus-within {
         @apply border-primary;
@@ -109,7 +109,7 @@
         @apply border-red-700;
     }
     .description {
-        @apply mb-1 text-gray-700 text-xs leading-normal;
+        @apply mb-1 text-gray-700 text-xs;
     }
     .description.error {
         @apply text-red-700;
@@ -126,6 +126,9 @@
     .btn-ghost.btn-gray {
         @apply border-gray-700 text-gray-700 hover:bg-gray-50;
     }
+    .btn-ghost.btn-red {
+        @apply border-red-700 text-red-700 hover:bg-red-50;
+    }
     .btn-text {
         @apply underline;
     }
@@ -140,6 +143,41 @@
         border-left: 4px solid transparent;
         border-right: 4px solid transparent;
         border-top: 4px solid currentColor;
+    }
+    .star {
+        @apply relative w-0 h-0 text-gray-700;
+        
+        display: inline-block;
+        
+        margin-left: .9em;
+        margin-right: .9em;
+        margin-bottom: 1.2em;
+        
+        border-right:  .3em solid transparent;
+        border-bottom: .7em  solid currentColor;
+        border-left:   .3em solid transparent;
+        
+        &:before, &:after {
+            content: '';
+            
+            display: block;
+            width: 0;
+            height: 0;
+            
+            position: absolute;
+            top: .6em;
+            left: -1em;
+            
+            border-right:  1em solid transparent;
+            border-bottom: .7em  solid currentColor;
+            border-left:   1em solid transparent;
+            
+            transform: rotate(-35deg);
+        }
+        
+        &:after {  
+            transform: rotate(35deg);
+        }
     }
 }
 

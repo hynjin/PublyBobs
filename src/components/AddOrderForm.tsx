@@ -66,7 +66,6 @@ export default function AddOrderForm(props: AddOrderProps): JSX.Element {
 
     useEffect(() => {
         setTodayMenu(weekMenus[dayNumber]);
-        console.log('+++', weekMenus);
         const resetOrder = async () => {
             await reset();
             weekMenus[dayNumber]?.orders.length > 0

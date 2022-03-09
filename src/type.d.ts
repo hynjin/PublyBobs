@@ -1,3 +1,11 @@
+declare type UserType = {
+    _id: string;
+    name: string;
+    email: string;
+    image: string;
+    permission: boolean;
+};
+
 declare type RestaurantType = {
     _id: string;
     name: string;

@@ -6,6 +6,7 @@ const UserSchema = new mongoose.Schema({
     password: String,
     image: String,
     order_history: [],
+    permission: Boolean,
 });
 
 const User = mongoose.models.User || mongoose.model('User', UserSchema);

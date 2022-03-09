@@ -27,7 +27,7 @@ declare type OrderType = {
     chef: ChefType;
     date: DateType;
     orders: { restaurant: RestaurantType; menu: MenuType[] }[];
-    order_at: string;
+    order_at: Date;
 };
 
 declare type ChefType = {

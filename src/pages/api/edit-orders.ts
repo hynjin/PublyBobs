@@ -18,7 +18,7 @@ const getOrders = (params: any) => {
                     $lte: DateHelper.toDate(rangeOfWeek.fri),
                 },
             },
-            { orders: true }
+            { orders: true, date: true }
         ).sort({ 'date.day_of_week': 1 });
     } catch (e) {
         console.log('error at get chef');
@@ -26,17 +26,25 @@ const getOrders = (params: any) => {
 };
 
 const addOrder = (params: any) => {
-    const { selectedDay, data } = params;
+    const { selectedDay, order } = params;
     const order_at = DateHelper.getStartOf(selectedDay, 'day');
 
     try {
         console.log('+++ add order order_at', order_at);
         console.log('+++ add order selectedDay', selectedDay);
+        const date = {
+            day_of_week: DateHelper.getDayOfWeek(order_at),
+            weekNumber: DateHelper.getWeekNumber(order_at),
+            year: DateHelper.getYear(order_at),
+            month: DateHelper.getMonth(order_at),
+            day: DateHelper.getDay(order_at),
+        };
         return Order.updateOne(
             { order_at },
             {
                 $set: {
-                    orders: data.order,
+                    orders: order,
+                    date,
                 },
             },
             {

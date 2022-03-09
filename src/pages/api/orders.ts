@@ -3,6 +3,7 @@ import { ObjectId } from 'mongodb';
 import connectToDatabase from '../../util/mongoose';
 import Order from '../../models/Order';
 import _ from 'lodash';
+import * as DateHelper from '../../helper/DateHelper';
 
 const getAllOrders = () => {
     return Order.find({}).limit(200);
@@ -12,17 +13,28 @@ const getAllOrdersByRestaurantsId = (restaurant_id: any) => {
     return Order.find({ restaurant_id }).limit(200);
 };
 
-const addOrder = (order: any) => {
-    const id = new ObjectId('620e2e53d60ac2177a6c6ab5');
+const addOrder = (params: any) => {
+    const { selectedDay, order, userId, option } = params;
+    const objectUserId = new ObjectId(userId);
+    const order_at = DateHelper.getStartOf(selectedDay, 'day');
 
     try {
-        console.log('+++ add orders post', order);
-        return Order.create({
-            ...order,
-            dayilyMenu_id: new ObjectId(order.dayilyMenu_id),
-            orderer_id: id,
-            updated_at: new Date(),
-        });
+        return Order.findOneAndUpdate(
+            { order_at },
+            {
+                $set: {
+                    [`orderers.${userId}`]: {
+                        userId: objectUserId,
+                        restaurantNumber: order[0],
+                        menuNumber: order[1],
+                        option,
+                    },
+                },
+            },
+            {
+                upsert: true,
+            }
+        );
     } catch (e) {
         console.log('error at add menordersus');
     }
@@ -53,7 +65,7 @@ export default async function ordersHandler(
         case 'POST':
             console.log('+++ call menus post');
             const result = await addOrder(body);
-            res.status(200).json(result.insertedId);
+            res.status(200).json(result);
             break;
         case 'DELETE':
             const { menu_id } = body;

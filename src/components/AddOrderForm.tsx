@@ -10,16 +10,17 @@ type AddOrderProps = {
     weekNumber: number;
 };
 
-export default function AddChefForm(props: AddOrderProps): JSX.Element {
+export default function AddOrderForm(props: AddOrderProps): JSX.Element {
     const { selectedDay, weekNumber } = props;
-    const [weekMenus, setWeekMenus] = useState<OrderType[]>([]);
+    const [weekMenus, setWeekMenus] = useState<_.Dictionary<OrderType>>({});
     const [todayMenu, setTodayMenu] = useState<OrderType>();
-    const dayNumber = DateHelper.getDayOfWeek(selectedDay) - 1;
+    const dayNumber = DateHelper.getDayOfWeek(selectedDay);
 
     const handlers = useForm();
     const {
         control,
         handleSubmit,
+        getFieldState,
         formState: { errors },
         reset,
     } = handlers;
@@ -51,11 +52,12 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
 
     const getWeekMenus = useCallback(async (weekNumber) => {
         const query = `?weekNumber=${weekNumber}`;
-        const resultChefs = await fetch(`/api/edit-orders` + query, {
+        const resultOrder = await fetch(`/api/edit-orders` + query, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         }).then((res) => res.json());
-        setWeekMenus(resultChefs);
+        const orders = _.keyBy(resultOrder, 'date.day_of_week');
+        setWeekMenus(orders);
     }, []);
 
     useEffect(() => {
@@ -64,6 +66,7 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
 
     useEffect(() => {
         setTodayMenu(weekMenus[dayNumber]);
+        console.log('+++', weekMenus);
         const resetOrder = async () => {
             await reset();
             weekMenus[dayNumber]?.orders.length > 0
@@ -79,13 +82,13 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
 
     const onClickAddOrder = useCallback(
         async (data: any) => {
-            const { addChef } = data;
+            const { order } = data;
             await fetch('/api/edit-orders', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     selectedDay,
-                    data,
+                    order,
                 }),
             });
         },

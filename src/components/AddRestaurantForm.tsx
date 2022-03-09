@@ -12,13 +12,13 @@ export default function AddRestaurantForm(props: AddRestaurantFormProps) {
     return (
         <>
             <div key={`add-restaurant-${index}`}>
-                <div className="mb-6">
+                <div className="mb-6 flex flex-col">
                     <Controller
                         control={control}
                         name={`order.${index}.restaurant.name`}
                         render={({ field }) => (
                             <input
-                                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                className="input mb-2"
                                 type="text"
                                 placeholder="식당 이름"
                                 autoFocus={false}
@@ -26,14 +26,12 @@ export default function AddRestaurantForm(props: AddRestaurantFormProps) {
                             />
                         )}
                     />
-                </div>
-                <div className="mb-6">
                     <Controller
                         control={control}
                         name={`order.${index}.restaurant.url`}
                         render={({ field }) => (
                             <input
-                                className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
+                                className="input mb-2"
                                 type="text"
                                 placeholder="URL"
                                 autoFocus={false}

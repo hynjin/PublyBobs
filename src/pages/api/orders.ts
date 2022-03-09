@@ -9,8 +9,23 @@ const getAllOrders = () => {
     return Order.find({}).limit(200);
 };
 
-const getAllOrdersByRestaurantsId = (restaurant_id: any) => {
-    return Order.find({ restaurant_id }).limit(200);
+const getOrders = (params: any) => {
+    const { weekNumber } = params;
+    const weekNum = !weekNumber && DateHelper.getWeekNumber();
+    const rangeOfWeek = DateHelper.getDateRangeOfWeek(weekNumber ?? weekNum);
+    try {
+        return Order.find(
+            {
+                order_at: {
+                    $gte: DateHelper.toDate(rangeOfWeek.mon),
+                    $lte: DateHelper.toDate(rangeOfWeek.fri),
+                },
+            },
+            { orders: true, date: true, orderers: true }
+        ).sort({ 'date.day_of_week': 1 });
+    } catch (e) {
+        console.log('error at get chef');
+    }
 };
 
 const addOrder = (params: any) => {
@@ -58,8 +73,7 @@ export default async function ordersHandler(
 
     switch (method) {
         case 'GET':
-            const { restaurant_id } = query;
-            const orders = await getAllOrdersByRestaurantsId(restaurant_id);
+            const orders = await getOrders(query);
             res.status(200).json(orders);
             break;
         case 'POST':

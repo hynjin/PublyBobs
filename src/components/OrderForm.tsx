@@ -30,7 +30,7 @@ export default function OrderForm(props: AddOrderProps): JSX.Element {
 
     const getWeekMenus = useCallback(async (weekNumber) => {
         const query = `?weekNumber=${weekNumber}`;
-        const resultOrder = await fetch(`/api/edit-orders` + query, {
+        const resultOrder = await fetch(`/api/orders` + query, {
             method: 'GET',
             headers: { 'Content-Type': 'application/json' },
         }).then((res) => res.json());
@@ -72,7 +72,6 @@ export default function OrderForm(props: AddOrderProps): JSX.Element {
                         <div key={`restaurant-list-${index}`}>
                             {orders?.restaurant.name}
                             {_.map(orders?.menu, (menu: any, idx: number) => {
-                                console.log('+++ menu', idx, menu);
                                 return (
                                     <div
                                         key={`menu-list-${index}-${idx}`}

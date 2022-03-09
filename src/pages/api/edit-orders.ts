@@ -18,7 +18,7 @@ const getOrders = (params: any) => {
                     $lte: DateHelper.toDate(rangeOfWeek.fri),
                 },
             },
-            { orders: true, date: true }
+            { orders: true, date: true, orderers: true }
         ).sort({ 'date.day_of_week': 1 });
     } catch (e) {
         console.log('error at get chef');

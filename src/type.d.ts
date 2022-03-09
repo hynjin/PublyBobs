@@ -28,6 +28,14 @@ declare type OrderType = {
     date: DateType;
     orders: { restaurant: RestaurantType; menu: MenuType[] }[];
     order_at: Date;
+    orderers: {
+        [key: string]: {
+            userId: string;
+            restaurantNumber: string;
+            menuNumber: string;
+            option: string;
+        };
+    };
 };
 
 declare type ChefType = {

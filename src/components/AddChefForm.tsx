@@ -2,7 +2,7 @@ import _ from 'lodash';
 import { useCallback, useEffect, Fragment, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as DateHelper from '../helper/DateHelper';
-import { Combobox, Transition } from '@headlessui/react';
+import { Combobox, Transition, Listbox } from '@headlessui/react';
 
 type AddChefProps = {
     date: DateHelper.ConfigType;
@@ -70,57 +70,56 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
         [date]
     );
 
-    const ChefComboBox = (index: number, dayName: string) => {
+    const ChefComboBox = (
+        value: any,
+        onChange: any,
+        index: number,
+        dayName: string
+    ) => {
         return (
-            <Combobox
-                value={{ name: '' }}
-                onChange={(event) => {
-                    setValue(`addChef.${index}`, event.name);
-                }}
-            >
-                <div className="relative">
-                    <div className="relative input mb-2 cursor-default focus:outline-none overflow-hidden">
-                        <Combobox.Input
-                            disabled
-                            className="w-full border-none focus:ring-0 pr-10 text-sm text-gray-900"
-                            {...register(`addChef.${index}`)}
-                            placeholder={dayName}
-                        />
-                        <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-3">
-                            <div className="flex flex-col gap-1">
-                                <div className="triangle-up" />
-                                <div className="triangle-down" />
-                            </div>
-                        </Combobox.Button>
-                    </div>
-                    <Transition
-                        as={Fragment}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                    >
-                        <Combobox.Options className="absolute w-full border overflow-auto bg-white max-h-56 text-sm">
-                            {_.map(chefLists, (chef) => (
-                                <div key={index}>
-                                    <Combobox.Option
-                                        key={chef._id}
-                                        className={({ selected, active }) =>
-                                            `cursor-default select-none p-3 ${
-                                                active && 'bg-gray-50'
-                                            } ${selected && 'bg-secondary'}`
-                                        }
-                                        value={chef}
-                                    >
-                                        <span className="block truncate">
-                                            {chef.name}
-                                        </span>
-                                    </Combobox.Option>
+            <div key={index}>
+                <Listbox value={value} onChange={onChange}>
+                    <div className="relative">
+                        <div className="relative input mb-2 cursor-default focus:outline-none overflow-hidden">
+                            <Listbox.Button className="absolute inset-y-0 right-0 flex items-center pr-3">
+                                <span className="block truncate">
+                                    {value?.name ?? dayName}
+                                </span>
+                                <div className="flex flex-col gap-1">
+                                    <div className="triangle-up" />
+                                    <div className="triangle-down" />
                                 </div>
-                            ))}
-                        </Combobox.Options>
-                    </Transition>
-                </div>
-            </Combobox>
+                            </Listbox.Button>
+                        </div>
+                        <Transition
+                            as={Fragment}
+                            leave="transition ease-in duration-100"
+                            leaveFrom="opacity-100"
+                            leaveTo="opacity-0"
+                        >
+                            <Listbox.Options className="absolute w-full border overflow-auto bg-white max-h-56 text-sm">
+                                {_.map(chefLists, (chef, idx) => (
+                                    <div key={`${index}-${idx}-${chef.userId}`}>
+                                        <Listbox.Option
+                                            key={chef._id}
+                                            className={({ selected, active }) =>
+                                                `cursor-default select-none p-3 ${
+                                                    active && 'bg-gray-50'
+                                                } ${selected && 'bg-secondary'}`
+                                            }
+                                            value={chef}
+                                        >
+                                            <span className="block truncate">
+                                                {chef.name}
+                                            </span>
+                                        </Listbox.Option>
+                                    </div>
+                                ))}
+                            </Listbox.Options>
+                        </Transition>
+                    </div>
+                </Listbox>
+            </div>
         );
     };
 
@@ -152,9 +151,10 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                         <div key={index}>
                             <Controller
                                 control={control}
-                                defaultValue={''}
                                 name={`addChef.${index}`}
-                                render={() => ChefComboBox(index, item)}
+                                render={({ field: { value, onChange } }) =>
+                                    ChefComboBox(value, onChange, index, item)
+                                }
                             />
                         </div>
                     );

@@ -29,9 +29,9 @@ export default NextAuth({
     secret: process.env.SECRET,
     callbacks: {
         async signIn({ account, profile }) {
-            // if (account.provider === 'google') {
-            //     return !!profile.email?.endsWith('@publy.co');
-            // }
+            if (account.provider === 'google') {
+                return !!profile.email?.endsWith('@publy.co');
+            }
             return true;
         },
         async session({ session, token, user }) {

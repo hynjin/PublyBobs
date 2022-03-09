@@ -5,6 +5,8 @@ import { useRouter } from 'next/router';
 
 export function UserDropdown() {
     const { data: session } = useSession();
+    const user = session?.user;
+
     const router = useRouter();
 
     return (
@@ -12,8 +14,8 @@ export function UserDropdown() {
             <Menu.Button>
                 <div className="w-44 p-3 flex items-center border text-xs">
                     <div className="flex-1 text-left">
-                        <p>이름</p>
-                        <p>email@publy.co</p>
+                        <p>{user?.name}</p>
+                        <p>{user?.email}</p>
                     </div>
                     <div className="triangle-down" />
                 </div>

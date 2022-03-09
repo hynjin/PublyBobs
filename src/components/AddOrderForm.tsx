@@ -119,11 +119,11 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
                     </button>
                 </div>
             </div>
-            <div className="px-3 grid grid-cols-3 gap-6">
+            <div className="py-3 grid grid-cols-3 divide-x divide-gray-100">
                 {fields.map((field, index) => {
                     return (
                         <div key={field.id}>
-                            <section className={'section'} key={field.id}>
+                            <section className="section p-3" key={field.id}>
                                 <AddRestaurantForm
                                     control={control}
                                     index={index}
@@ -132,7 +132,7 @@ export default function AddChefForm(props: AddOrderProps): JSX.Element {
                                 <AddMenuForm control={control} index={index} />
                                 <button
                                     type="button"
-                                    className="btn"
+                                    className="mt-8 p-3"
                                     onClick={() => remove(index)}
                                 >
                                     식당 삭제

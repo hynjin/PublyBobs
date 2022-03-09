@@ -23,6 +23,7 @@ import AddRestaurantForm from '../components/AddRestaurantForm';
 import OrderForm from '../components/OrderForm';
 import { getSession, signIn, signOut, useSession } from 'next-auth/react';
 import _ from 'lodash';
+import { StarIcon } from '@heroicons/react/outline';
 
 export default function News(props: { chefs: any }) {
     const today = DateHelper.getDateByFormat();
@@ -36,6 +37,15 @@ export default function News(props: { chefs: any }) {
     const onSelectedDay = useCallback((day: any) => {
         setSelectedDay(day);
     }, []);
+
+    const [year, setYear] = useState(DateHelper.getYear(selectedDay));
+    const [month, setMonth] = useState(
+        DateHelper.getDateByFormatEn(selectedDay, 'MMM')
+    );
+    useEffect(() => {
+        setYear(DateHelper.getYear(selectedDay));
+        setMonth(DateHelper.getDateByFormatEn(selectedDay, 'MMM'));
+    }, [selectedDay]);
 
     const {
         register,
@@ -52,7 +62,7 @@ export default function News(props: { chefs: any }) {
                 flex
                 flex-col
                 divide-y
-                divide-double` // ERROR! double 스타일 적용
+                divide-double` // TODO: double 스타일 적용
             }
         >
             <div className="divide-y">
@@ -65,25 +75,39 @@ export default function News(props: { chefs: any }) {
                     <UserDropdown />
                 </div>
                 <div className="p-3 flex justify-center">
+                    {/* TODO: 랜덤 메뉴명 (우선순위 낮음) */}
                     <p className="">
-                        일주일 식단을 미리 등록하세요! 매주 월요일 정오에
-                        오픈됩니다.
+                        오늘은 '랜덤 메뉴명' 먹고 일할까?
                     </p>
                 </div>
             </div>
             <div className="flex-1 flex flex-col divide-y">
+                <div className="p-3 flex justify-between items-center">
+                    <h2 className="p-3">
+                        {month}, {year}
+                    </h2>
+                    <div className="p-3 flex">
+                        <button
+                            type="button"
+                            className="btn btn-ghost btn-gray"
+                            // onClick={ TODO: 오늘로 날짜 변경 }
+                        >
+                            <span>오늘</span>
+                        </button>
+                    </div>
+                </div>
+                
                 <div className="flex-1 p-3 pl-0 flex gap-3 divide-x">
-                    <div className="pl-3 w-1/4">
+                    <div className="pl-3 basis-1/4">
                         <div className="p-3">
-                            {/* section title */}
                             <div className="mb-6">
                                 <div className="relative h-6 mb-1">
                                     <div
                                         className="
-                                        absolute -top-2 -left-4 -rotate-12
-                                        w-8 h-4 rounded-[32px/16px] bg-primary
-                                        flex justify-center items-center
-                                    "
+                                            absolute -top-2 -left-4 -rotate-12
+                                            w-8 h-4 rounded-[32px/16px] bg-primary
+                                            flex justify-center items-center
+                                        "
                                     >
                                         <span className="text-[10px] text-white font-bold leading-none">
                                             NOT
@@ -142,12 +166,51 @@ export default function News(props: { chefs: any }) {
                             </div>
                         </div>
                     </div>
-                    <div className="pl-3 w-2/4 divide-y divide-more"></div>
-                    <OrderForm
-                        weekNumber={weekNumber}
-                        selectedDay={selectedDay}
-                    />
-                    <div className="pl-3 w-1/4"></div>
+                    <div className="pl-3 basis-2/4 divide-y divide-more">
+                        <Week
+                            menus={[]}
+                            weekNumber={weekNumber}
+                            setWeekNumber={onChangeWeekNumber}
+                            selectedDay={selectedDay}
+                            setSelectedDay={onSelectedDay}
+                        />
+                        <OrderForm
+                            weekNumber={weekNumber}
+                            selectedDay={selectedDay}
+                        />
+                    </div>
+                    <div className="pl-3 basis-1/4 divide-y divide-more">
+                        <div className="p-3 text-center">
+                            <h3 className="mb-4">Coming Soon</h3>
+                            <div className="mb-3 flex justify-center">
+                                <p className="star text-gray-200" />
+                                <p className="star text-gray-200" />
+                                <p className="star text-gray-200" />
+                                <p className="star text-gray-200" />
+                                <p className="star text-gray-200" />
+                            </div>
+                        </div>
+                        <div className="p-3 text-center">
+                            <div className="py-3">
+                                <h3 className="mb-1">More Menus?</h3>
+                                <p className="text-xs text-gray-700">먹고싶은 메뉴 또는 식당을 추천해주세요.<br/>식단 구성에 참고할게요!</p>
+                            </div>
+                            <form className="py-3">
+                                <input
+                                    className="input"
+                                    placeholder="정확한 이름을 알려주세요."
+                                    type="text"
+                                />
+                                <button
+                                    type="submit"
+                                    className="btn btn-light"
+                                    // onClick={ 볼수만 있으면 됨 (우선순위 낮음) }
+                                >
+                                    추천해요
+                                </button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

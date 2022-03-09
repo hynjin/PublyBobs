@@ -117,8 +117,8 @@
     .btn {
         @apply py-2 px-4 bg-primary border border-primary text-sm text-white focus:ring-0;
     }
-    .btn-block {
-        @apply flex-1;
+    .btn-light {
+        @apply bg-primary/10 border-primary/10 text-primary hover:bg-primary/20 hover:border-primary/20;
     }
     .btn-ghost {
         @apply bg-transparent text-primary hover:bg-primary/10;

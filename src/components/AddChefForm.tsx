@@ -135,7 +135,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                                 filteredPeople.map((person) => (
                                 <Combobox.Option
                                     key={person.id}
-                                    className={({ selected, active }) =>`cursor-default select-none p-3 ${active && 'bg-gray-50'} ${selected && 'bg-secondary'}`}
+                                    className={({ selected, active }) =>`cursor-default select-none p-3 ${active && 'bg-gray-50'} ${selected && 'bg-primary/10'}`}
                                     value={person}
                                 >
                                     <span className="block truncate">{person.name}</span>

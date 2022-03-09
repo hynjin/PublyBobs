@@ -80,7 +80,7 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
             <div key={index}>
                 <Listbox value={value} onChange={onChange}>
                     <div className="relative">
-                        <div className="relative input mb-2 cursor-default overflow-hidden">
+                        <div className="relative input cursor-default overflow-hidden">
                             <span className="block truncate">
                                 {value?.name ?? dayName}
                             </span>

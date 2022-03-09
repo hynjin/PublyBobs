@@ -36,7 +36,7 @@ export default function AddMenuForm(props: AddMenuFormProps) {
                                 name={`order.${index}.menu.${idx}.name`}
                                 render={({ field }) => (
                                     <input
-                                        className="input mb-2"
+                                        className="input"
                                         type="text"
                                         placeholder="새로운 메뉴"
                                         {...field}
@@ -48,7 +48,7 @@ export default function AddMenuForm(props: AddMenuFormProps) {
                                 name={`order.${index}.menu.${idx}.description`}
                                 render={({ field }) => (
                                     <input
-                                        className="input mb-2"
+                                        className="input"
                                         type="text"
                                         placeholder="메모를 추가할 수 있어요. (40자)"
                                         {...field}

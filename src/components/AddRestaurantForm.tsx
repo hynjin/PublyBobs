@@ -18,7 +18,7 @@ export default function AddRestaurantForm(props: AddRestaurantFormProps) {
                         name={`order.${index}.restaurant.name`}
                         render={({ field }) => (
                             <input
-                                className="input mb-2"
+                                className="input"
                                 type="text"
                                 placeholder="식당 이름"
                                 autoFocus={false}
@@ -31,7 +31,7 @@ export default function AddRestaurantForm(props: AddRestaurantFormProps) {
                         name={`order.${index}.restaurant.url`}
                         render={({ field }) => (
                             <input
-                                className="input mb-2"
+                                className="input"
                                 type="text"
                                 placeholder="URL"
                                 autoFocus={false}

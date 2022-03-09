@@ -6,10 +6,8 @@ import React, {
     useCallback,
 } from 'react';
 import 'react-modern-calendar-datepicker/lib/DatePicker.css';
-import { Calendar, DayValue } from 'react-modern-calendar-datepicker';
 import * as DateHelper from '../helper/DateHelper';
 import _ from 'lodash';
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/solid';
 import { RadioGroup } from '@headlessui/react';
 import {
     ArrowNarrowLeftIcon,
@@ -23,10 +21,6 @@ type weekProps = {
     selectedDay: any;
     setSelectedDay: (d: any) => void;
 };
-
-function classNames(...classes: string[]) {
-    return classes.filter(Boolean).join(' ');
-}
 
 export default function Week(props: weekProps) {
     const { menus, weekNumber, setWeekNumber, selectedDay, setSelectedDay } =

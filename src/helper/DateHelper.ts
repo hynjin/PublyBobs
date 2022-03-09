@@ -80,6 +80,10 @@ export function getStartOf(dateTime: ConfigType = now(), unit: OpUnitType) {
     return dayjs.utc(dateTime).startOf(unit).utc().toISOString();
 }
 
+export function getStartOfDay(dateTime: ConfigType = now(), unit: OpUnitType) {
+    return getStartOf(dateTime, 'day');
+}
+
 export function getStartOfMonth(dateTime: ConfigType = now()) {
     return getStartOf(dateTime, 'month');
 }
@@ -90,6 +94,10 @@ export function getStartOfWeek(dateTime: ConfigType = now()) {
 
 export function getEndOf(dateTime: ConfigType = now(), unit: OpUnitType) {
     return dayjs.utc(dateTime).endOf(unit).utc().toISOString();
+}
+
+export function getEndOfDay(dateTime: ConfigType = now()) {
+    return getEndOf(dateTime, 'day');
 }
 
 export function getEndOfMonth(dateTime: ConfigType = now()) {
@@ -211,5 +219,5 @@ export function isSameDay(
     firstDate: ConfigType = now(),
     secondDate: ConfigType = now()
 ) {
-    return dayjs(firstDate).isSame(secondDate, 'd');
+    return dayjs(getDateByFormat(firstDate)).isSame(secondDate, 'd');
 }

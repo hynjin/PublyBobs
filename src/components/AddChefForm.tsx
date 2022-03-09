@@ -3,6 +3,8 @@ import { useCallback, useEffect, Fragment, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import * as DateHelper from '../helper/DateHelper';
 import { Combobox, Transition, Listbox } from '@headlessui/react';
+import useSWR from 'swr';
+import { fetcher, postFetcher } from '../helper/Helper';
 
 type AddChefProps = {
     date: DateHelper.ConfigType;
@@ -11,61 +13,36 @@ type AddChefProps = {
 
 export default function AddChefForm(props: AddChefProps): JSX.Element {
     const { date, weekNumber } = props;
+    const { data: chefs } = useSWR(
+        `/api/chefs?weekNumber=${weekNumber}`,
+        fetcher
+    );
+    const { data: chefLists } = useSWR(`/api/users?type=permission`, fetcher);
     const daysOfWeek = DateHelper.getWeekDayList().slice(1, 6);
-    const [chefs, setChefs] = useState<any[]>([]);
-    const [chefLists, setChefLists] = useState<any[]>([]);
 
     const {
-        register,
         setValue,
         handleSubmit,
         control,
         formState: { isSubmitting },
     } = useForm({});
 
-    const getChefs = useCallback(async () => {
-        const query = `?weekNumber=${weekNumber}`;
-        const resultChefs = await fetch(`/api/chefs` + query, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        }).then((res) => res.json());
-        setChefs(resultChefs);
-    }, [weekNumber]);
-
     useEffect(() => {
-        getChefs();
-    }, [weekNumber]);
-
-    useEffect(() => {
-        const getChefLists = async () => {
-            const query = `?type=permission`;
-            const resultChefs = await fetch(`/api/users` + query, {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-            }).then((res) => res.json());
-            setChefLists(resultChefs);
-        };
-        getChefLists();
-    }, []);
-
-    useEffect(() => {
-        _.map(daysOfWeek, (day, i) => {
-            setValue(`addChef.${i}`, chefs[i]?.chef);
-        });
+        chefs &&
+            _.map(daysOfWeek, (day, i) => {
+                setValue(`addChef.${i}`, chefs[i]?.chef);
+            });
     }, [chefs]);
 
     const onClickAddChef = useCallback(
         async (data: any) => {
             const { addChef } = data;
-            await fetch('/api/chefs', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    date,
-                    chefs: addChef,
-                    weekNumber: weekNumber,
-                }),
-            });
+            const body = {
+                date,
+                chefs: addChef,
+                weekNumber: weekNumber,
+            };
+            await postFetcher('/api/chefs', body);
         },
         [date]
     );
@@ -104,7 +81,9 @@ export default function AddChefForm(props: AddChefProps): JSX.Element {
                                         <Listbox.Option
                                             key={chef._id}
                                             className={({ selected, active }) =>
-                                                `cursor-default select-none p-3 text-gray-900 ${selected && 'bg-primary/10'} ${active && 'bg-gray-50'}`
+                                                `cursor-default select-none p-3 text-gray-900 ${
+                                                    selected && 'bg-primary/10'
+                                                } ${active && 'bg-gray-50'}`
                                             }
                                             value={chef}
                                         >

@@ -1,20 +1,11 @@
 import { GetServerSideProps } from 'next';
-import React, {
-    useState,
-    useCallback,
-    useRef,
-    useEffect,
-    useLayoutEffect,
-} from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import styles from '../styles/Home.module.css';
-import Link from 'next/link';
 import AddChefForm from '../components/AddChefForm';
 import * as DateHelper from '../helper/DateHelper';
 import Week from '../components/Week';
-import { useForm, useWatch, Control } from 'react-hook-form';
 import { UserDropdown } from '../components/UserDropdown';
 import AddOrderForm from '../components/AddOrderForm';
-import OrderForm from '../components/OrderForm';
 import { getSession } from 'next-auth/react';
 import _ from 'lodash';
 
@@ -24,12 +15,11 @@ export default function Editor() {
         setWeekNumber(num);
     }, []);
 
-    const [selectedDay, setSelectedDay] = useState('');
+    const [selectedDay, setSelectedDay] = useState(
+        DateHelper.getDateByFormat()
+    );
     const onSelectedDay = useCallback((day: any) => {
         setSelectedDay(day);
-    }, []);
-    useEffect(() => {
-        setSelectedDay(DateHelper.getDateByFormat());
     }, []);
 
     const [year, setYear] = useState(DateHelper.getYear(selectedDay));
@@ -40,14 +30,6 @@ export default function Editor() {
         setYear(DateHelper.getYear(selectedDay));
         setMonth(DateHelper.getDateByFormatEn(selectedDay, 'MMM'));
     }, [selectedDay]);
-
-    const {
-        register,
-        handleSubmit,
-        formState: { isSubmitting },
-    } = useForm();
-
-    const onSubmit = (data: any) => console.log(data);
 
     return (
         <div

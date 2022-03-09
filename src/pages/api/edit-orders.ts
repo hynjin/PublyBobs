@@ -85,7 +85,7 @@ export default async function restaurantHandler(
             res.status(200).json(orders);
             break;
         case 'POST':
-            console.log('+++ call orders post');
+            console.log('+++ call orders post', body);
             const result = await addOrder(body);
             console.log('+++ result add orders post', result);
             res.status(200).json(result);

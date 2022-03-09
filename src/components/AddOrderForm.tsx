@@ -4,6 +4,8 @@ import { useForm, useFieldArray, FormProvider } from 'react-hook-form';
 import * as DateHelper from '../helper/DateHelper';
 import AddRestaurantForm from './AddRestaurantForm';
 import AddMenuForm from './AddMenuForm';
+import { fetcher, postFetcher } from '../helper/Helper';
+import useSWR from 'swr';
 
 type AddOrderProps = {
     selectedDay: string;
@@ -12,6 +14,11 @@ type AddOrderProps = {
 
 export default function AddOrderForm(props: AddOrderProps): JSX.Element {
     const { selectedDay, weekNumber } = props;
+    const { data } = useSWR(
+        `/api/edit-orders?weekNumber=${weekNumber}`,
+        fetcher
+    );
+
     const [weekMenus, setWeekMenus] = useState<_.Dictionary<OrderType>>({});
     const [todayMenu, setTodayMenu] = useState<OrderType>();
     const dayNumber = DateHelper.getDayOfWeek(selectedDay);
@@ -50,19 +57,10 @@ export default function AddOrderForm(props: AddOrderProps): JSX.Element {
         };
     }, [fields.length]);
 
-    const getWeekMenus = useCallback(async (weekNumber) => {
-        const query = `?weekNumber=${weekNumber}`;
-        const resultOrder = await fetch(`/api/edit-orders` + query, {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        }).then((res) => res.json());
-        const orders = _.keyBy(resultOrder, 'date.day_of_week');
-        setWeekMenus(orders);
-    }, []);
-
     useEffect(() => {
-        getWeekMenus(weekNumber);
-    }, [weekNumber]);
+        const orders = _.keyBy(data, 'date.day_of_week');
+        setWeekMenus(orders);
+    }, [data]);
 
     useEffect(() => {
         setTodayMenu(weekMenus[dayNumber]);
@@ -82,14 +80,11 @@ export default function AddOrderForm(props: AddOrderProps): JSX.Element {
     const onClickAddOrder = useCallback(
         async (data: any) => {
             const { order } = data;
-            await fetch('/api/edit-orders', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    selectedDay,
-                    order,
-                }),
-            });
+            const body = {
+                selectedDay,
+                order,
+            };
+            await postFetcher('/api/edit-orders', body);
         },
         [selectedDay]
     );

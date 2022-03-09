@@ -1,4 +1,3 @@
-import axios, { AxiosRequestConfig } from 'axios';
 import request from '../libraries/request';
 
 // export function getChef(
@@ -25,8 +24,18 @@ import request from '../libraries/request';
 //     });
 // }
 
-export function getChef(params?: { weekNumber: any }) {
-    // const { subId, page } = params;
+export function getChefs(params: { weekNumber: number }) {
+    const { weekNumber } = params;
+
+    return request({
+        url: `/chefs`,
+        method: 'GET',
+        params,
+    });
+}
+
+export function getChefList(params: { permission: boolean }) {
+    const { permission } = params;
 
     return request({
         url: `/chefs`,

@@ -94,10 +94,7 @@ export default function AddOrderForm(props: AddOrderProps): JSX.Element {
                 <div // TODO: rolling text
                     className="flex-1 text-sm"
                 >
-                    <p>
-                        Tip: 설정에서 주문한 적 있는 식당/메뉴와 주문자 목록을
-                        관리할 수 있어요.
-                    </p>
+                    <p><span className="font-bold">Tip:</span> 스위치를 끄면 해당 식당이나 메뉴에 대한 주문을 받지 않을 수 있어요. <i>단, 슬랙 공지는 필수!!</i></p>
                 </div>
                 <div className="flex gap-2">
                     <button
@@ -110,13 +107,13 @@ export default function AddOrderForm(props: AddOrderProps): JSX.Element {
                     <button
                         type="submit"
                         className="btn"
-                        onClick={handleSubmit(onClickAddOrder)} //{ 데이터 저장. 저장하지 않고 다른 이전/다음/설정/GNB메뉴 등을 누르면 저장하라는 alert을 노출 }
+                        onClick={handleSubmit(onClickAddOrder)}
                     >
                         저장
                     </button>
                 </div>
             </div>
-            <div className="py-3 grid grid-cols-3 divide-x divide-gray-100">
+            <div className="py-3 grid grid-cols-3 divide-x divide-more">
                 {fields.map((field, index) => {
                     return (
                         <div key={field.id}>

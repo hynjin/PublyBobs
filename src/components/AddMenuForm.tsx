@@ -71,7 +71,7 @@ export default function AddMenuForm(props: AddMenuFormProps) {
                                 name={`order.${index}.menu.${idx}.name`}
                                 render={({ field }) => (
                                     <input
-                                        className="text-sm text-gray-900 p-0 bg-white"
+                                        className="input"
                                         type="text"
                                         disabled
                                         {...field}
@@ -84,7 +84,7 @@ export default function AddMenuForm(props: AddMenuFormProps) {
                                 name={`order.${index}.menu.${idx}.description`}
                                 render={({ field }) => (
                                     <input
-                                        className="text-xs text-gray-700 p-0 bg-white"
+                                        className="input"
                                         type="text"
                                         disabled
                                         {...field}

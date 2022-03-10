@@ -14,12 +14,11 @@ type AddOrderProps = {
 
 export default function AddOrderForm(props: AddOrderProps): JSX.Element {
     const { selectedDay, weekNumber } = props;
-    const { data } = useSWR(
+    const { data: weekMenus } = useSWR(
         `/api/edit-orders?weekNumber=${weekNumber}`,
         fetcher
     );
 
-    const [weekMenus, setWeekMenus] = useState<_.Dictionary<OrderType>>({});
     const [todayMenu, setTodayMenu] = useState<OrderType>();
     const dayNumber = DateHelper.getDayOfWeek(selectedDay);
 
@@ -58,11 +57,6 @@ export default function AddOrderForm(props: AddOrderProps): JSX.Element {
     }, [fields.length]);
 
     useEffect(() => {
-        const orders = _.keyBy(data, 'date.day_of_week');
-        setWeekMenus(orders);
-    }, [data]);
-
-    useEffect(() => {
         setTodayMenu(weekMenus[dayNumber]);
         const resetOrder = async () => {
             await reset();
@@ -94,7 +88,11 @@ export default function AddOrderForm(props: AddOrderProps): JSX.Element {
                 <div // TODO: rolling text
                     className="flex-1 text-sm"
                 >
-                    <p><span className="font-bold">Tip:</span> 스위치를 끄면 해당 식당이나 메뉴에 대한 주문을 받지 않을 수 있어요. <i>단, 슬랙 공지는 필수!!</i></p>
+                    <p>
+                        <span className="font-bold">Tip:</span> 스위치를 끄면
+                        해당 식당이나 메뉴에 대한 주문을 받지 않을 수 있어요.{' '}
+                        <i>단, 슬랙 공지는 필수!!</i>
+                    </p>
                 </div>
                 <div className="flex gap-2">
                     <button

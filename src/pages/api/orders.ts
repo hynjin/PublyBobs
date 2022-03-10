@@ -9,12 +9,12 @@ const getAllOrders = () => {
     return Order.find({}).limit(200);
 };
 
-const getOrders = (params: any) => {
+const getOrders = async (params: any) => {
     const { weekNumber } = params;
     const weekNum = !weekNumber && DateHelper.getWeekNumber();
     const rangeOfWeek = DateHelper.getDateRangeOfWeek(weekNumber ?? weekNum);
     try {
-        return Order.find(
+        const data = await Order.find(
             {
                 order_at: {
                     $gte: DateHelper.toDate(rangeOfWeek.mon),
@@ -23,6 +23,7 @@ const getOrders = (params: any) => {
             },
             { orders: true, date: true, orderers: true }
         ).sort({ 'date.day_of_week': 1 });
+        return _.keyBy(data, 'date.day_of_week');
     } catch (e) {
         console.log('error at get chef');
     }
